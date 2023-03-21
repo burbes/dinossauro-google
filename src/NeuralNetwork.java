@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 
 public class NeuralNetwork {
 
@@ -6,27 +7,30 @@ public class NeuralNetwork {
     static final double TAXA_PESO_INICIAL = 1.0;
     static final int BIAS = 1;
 
-    public static void main(String[] args) {
-        // TODO: Implement main logic
-    }
+   /* private static void train(RedeNeural net, double[] input, double[] target) {
+        NeuralNetwork.RNA_CopiarParaEntrada(net, input);
+        NeuralNetwork.RNA_CalcularSaida(net);
+        NeuralNetwork.RNA_SalvarRede(net, target);
+        NeuralNetwork.RNA_QuantidadePesos(net);
+    }*/
 
     static class Neuronio {
-        double[] Peso;
-        double Erro;
-        double Saida;
-        int QuantidadeLigacoes;
+        double[] Peso = new double[]{};
+        double Erro = 0.0;
+        double Saida = 1.0;
+        int QuantidadeLigacoes = 0;
     }
 
     static class Camada {
-        Neuronio[] Neuronios;
+        Neuronio[] Neuronios = new Neuronio[]{};
         int QuantidadeNeuronios;
     }
 
     static class RedeNeural {
-        Camada CamadaEntrada;
-        Camada[] CamadaEscondida;
-        Camada CamadaSaida;
-        int QuantidadeEscondidas;
+        Camada CamadaEntrada = new Camada();
+        Camada[] CamadaEscondida = new Camada[]{ };
+        Camada CamadaSaida = new Camada();
+        int QuantidadeEscondidas = 0;
     }
 
     static double relu(double X) {
@@ -187,6 +191,7 @@ public class NeuralNetwork {
         Rede.CamadaEntrada.Neuronios = new Neuronio[QtdNeuroniosEntrada];
 
         for (i = 0; i < QtdNeuroniosEntrada; i++) {
+            Rede.CamadaEntrada.Neuronios[i] = new Neuronio();
             Rede.CamadaEntrada.Neuronios[i].Saida = 1.0;
         }
 
@@ -194,10 +199,12 @@ public class NeuralNetwork {
         Rede.CamadaEscondida = new Camada[QuantidadeEscondidas];
 
         for (i = 0; i < QuantidadeEscondidas; i++) {
+            Rede.CamadaEscondida[i]= new Camada();
             Rede.CamadaEscondida[i].QuantidadeNeuronios = QtdNeuroniosEscondida;
             Rede.CamadaEscondida[i].Neuronios = new Neuronio[QtdNeuroniosEscondida];
 
             for (j = 0; j < QtdNeuroniosEscondida; j++) {
+                    Rede.CamadaEscondida[i].Neuronios[j] = new Neuronio();
                 if (i == 0) {
                     RNA_CriarNeuronio(Rede.CamadaEscondida[i].Neuronios[j], QtdNeuroniosEntrada);
                 } else {
@@ -210,15 +217,11 @@ public class NeuralNetwork {
         Rede.CamadaSaida.Neuronios = new Neuronio[QtdNeuroniosSaida];
 
         for (j = 0; j < QtdNeuroniosSaida; j++) {
+            Rede.CamadaSaida.Neuronios[j] = new Neuronio();
             RNA_CriarNeuronio(Rede.CamadaSaida.Neuronios[j], QtdNeuroniosEscondida);
         }
 
         return Rede;
-    }
-
-    static RedeNeural RNA_DestruirRedeNeural(RedeNeural Rede) {
-        // Em Java, a coleta de lixo gerencia a liberação de memória, então este método não é necessário.
-        return null;
     }
 
 
@@ -248,6 +251,32 @@ public class NeuralNetwork {
             e.printStackTrace();
         }
     }
+
+/*
+    private static void calculateError(RedeNeural net, double[] target) {
+        int i, j, k;
+
+        for (i = 0; i < net.CamadaSaida.QuantidadeNeuronios; i++) {
+            net.CamadaSaida.Neuronios[i].Erro = (target[i] - net.CamadaSaida.Neuronios[i].Saida) * reluDx(net.CamadaSaida.Neuronios[i].Saida);
+        }
+
+        for (k = net.CamadaEscondida.length - 1; k >= 0; k--) {
+            for (i = 0; i < net.CamadaEscondida[k].numNeurons - BIAS; i++) {
+                sum = 0;
+                if (k == net.CamadaEscondida.length - 1) {
+                    for (j = 0; j < net.CamadaSaida.numNeurons; j++) {
+                        sum += net.CamadaSaida.Neuronios[j].weights[i] * net.CamadaSaida.Neuronios[j].error;
+                    }
+                } else {
+                    for (j = 0; j < net.CamadaEscondida[k + 1].QuantidadeNeuronios - BIAS; j++) {
+                        sum += net.CamadaEscondida[k + 1].Neuronios[j].weights[i] * net.CamadaEscondida[k + 1].Neuronios[j].error;
+                    }
+                }
+                net.CamadaEscondida[k].Neuronios[i].Erro = reluDx(net.CamadaEscondida[k].Neuronios[i].Saida) * sum;
+            }
+        }
+    }*/
+
 }
 
 

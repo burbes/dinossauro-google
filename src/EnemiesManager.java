@@ -14,13 +14,9 @@ public class EnemiesManager {
     private List<Enemy> enemies;
     private Random rand;
 
-    private MainCharacter mainCharacter;
-    private GameScreen gameScreen;
+    private double distanciaAtePersonagem;
 
-
-    public EnemiesManager(MainCharacter mainCharacter, GameScreen gameScreen) {
-        this.mainCharacter = mainCharacter;
-        this.gameScreen = gameScreen;
+    public EnemiesManager() {
         rand = new Random();
         enemies = new ArrayList<Enemy>();
 
@@ -28,23 +24,33 @@ public class EnemiesManager {
         cactus2 = Resource.getResourceImage("data/cactus2.png");
 
         enemies.add(getRandomCactus());
-
+        distanciaAtePersonagem = 0.0f;
     }
 
-    public void update() {
+    public Enemy getEnemy(){
+        return enemies.stream().findFirst().orElseGet(() -> {
+            enemies.add(getRandomCactus());
+            return enemies.stream().findFirst().get();
+        });
+    }
+
+    public void update(MainCharacter mainCharacter) {
         for (Enemy e : enemies) {
             e.update();
 
-            if(e.isOver() && !e.isScoreGot()){
-                gameScreen.plusScore(20);
+            if(e.isOver(mainCharacter) && !e.isScoreGot()){
+                mainCharacter.upScore();
                 e.setScoreGot(true);
             }
 
             if (mainCharacter.getBound().intersects(e.getBound())){
                 mainCharacter.setAlive(false);
+                mainCharacter.dead(true);
 
             }
+            distanciaAtePersonagem = mainCharacter.getX() - e.getBound().getX();
         }
+
 
         Enemy enemy = enemies.get(0);
         if (enemy.isOutOfScreen()) {
@@ -63,7 +69,7 @@ public class EnemiesManager {
 
     private Cactus getRandomCactus(){
         Cactus cactus;
-        cactus = new Cactus(mainCharacter);
+        cactus = new Cactus();
         cactus.setX(600);
         if(rand.nextBoolean()){
             cactus.setImage(cactus1);
@@ -78,4 +84,7 @@ public class EnemiesManager {
         enemies.add(getRandomCactus());
     }
 
+    public double getDistanciaAtePersonagem() {
+        return distanciaAtePersonagem;
+    }
 }

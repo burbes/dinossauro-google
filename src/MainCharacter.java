@@ -1,12 +1,19 @@
 
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Random;
 
 public class MainCharacter {
 
-    private int TamanhoDNA;
-    private double DNA;
+    int tamanhoDNA;
+    double[] DNA;
+    double fitness;
 
+    NeuralNetwork.RedeNeural cerebro;
     private static final int NORMAL_RUN = 0;
     private static final int JUMPING = 1;
     private static final int DOWN_RUN = 2;
@@ -30,6 +37,14 @@ public class MainCharacter {
 
     private boolean isAlive = true;
 
+    @SuppressWarnings("unchecked")
+    private AudioClip jumpSound;
+    @SuppressWarnings("unchecked")
+    private AudioClip deadSound;
+    @SuppressWarnings("unchecked")
+    private AudioClip scoreUpSound;
+
+    private Color color;
 
     public MainCharacter(){
         normalRunAnim = new Animation(90);
@@ -43,7 +58,32 @@ public class MainCharacter {
 
         rect = new Rectangle();
 
+        color = getRandomColor();
+        try {
+            jumpSound = Applet.newAudioClip(new URL("file", "", "data/jump.wav"));
+            deadSound = Applet.newAudioClip(new URL("file", "", "data/dead.wav"));
+            scoreUpSound = Applet.newAudioClip(new URL("file", "", "data/scoreup.wav"));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
+    }
+    private Color getRandomColor(){
+        Random rand = new Random(3);
+        Color color =Color.GRAY;
+        if(rand.nextInt() == 0){
+            color=  Color.BLACK;
+        }
+        if(rand.nextInt() == 1){
+            color=  Color.BLUE;
+        }
+        if(rand.nextInt() == 2){
+            color=  Color.RED;
+        }
+        if(rand.nextInt() == 3){
+            color=  Color.GREEN;
+        }
+        return color;
     }
 
     public void update(){
@@ -73,6 +113,8 @@ public class MainCharacter {
     }
 
     public void draw(Graphics g){
+//        g.setColor(color);
+//        g.drawLine(0, 100, 0, 100);
         switch(state) {
             case NORMAL_RUN:
                 g.drawImage(normalRunAnim.getFrame(), (int) x, (int) y, null);
@@ -84,16 +126,18 @@ public class MainCharacter {
                 g.drawImage(downRunAnim.getFrame(), (int) x, (int) (y + 20), null);
                 break;
             case DEATH:
-                g.drawImage(deathImage, (int) x, (int) y, null);
+                g.drawImage(deathImage, (int) x-10, (int) y-10, null);
                 break;
         }
     }
 
     public void jump(){
 
-        speedY = -4f;
-        y += speedY;
-        state = JUMPING;
+        if(state != JUMPING){
+            speedY = -8f;
+            y += speedY;
+            state = JUMPING;
+        }
     }
 
     public void down(boolean isDown) {
@@ -149,7 +193,7 @@ public class MainCharacter {
     public void upScore() {
         score += 20;
         if(score % 100 == 0) {
-            //scoreUpSound.play();
+            scoreUpSound.play();
         }
     }
 

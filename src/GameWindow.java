@@ -2,8 +2,8 @@ import javax.swing.*;
 
 public class GameWindow  extends JFrame {
 
-    public static final int SCREEN_WIDTH = 400;
-    public static final int SCREEN_HEIGHT = 200;
+    public static final int SCREEN_WIDTH = 1200;
+    public static final int SCREEN_HEIGHT = 500;
 
 
     private GameScreen gameScreen;
@@ -11,7 +11,7 @@ public class GameWindow  extends JFrame {
     public GameWindow() {
         super("Java T-Rex game");
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-        setLocation(400, 200);
+//        setLocation(400, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 

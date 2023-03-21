@@ -8,22 +8,23 @@ import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class GameScreen extends JPanel implements Runnable, KeyListener {
 
 
-    private static final int START_GAME_STATE = 0;
-    private static final int GAME_PLAYING_STATE = 1;
-    private static final int GAME_OVER_STATE = 2;
-
-    public static final float GRAVITY = 0.1f;
+    public static final float VELOCIDADE = 3f;
+    public static final float GRAVITY = 0.5f;
     public static final float GROUNDy = 110; // by pixel
+    public static final int QUANTIDADE_DINOS = 10;
 
-    private int score;
+    private int GERACAO = 0;
 
     ;
-    private MainCharacter character;
+//    private MainCharacter character1;
+//    private MainCharacter character2;
 
     private List<MainCharacter> dinossaurs;
     private boolean isKeyPressed;
@@ -37,46 +38,35 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     private Land land;
     private EnemiesManager enemiesManager;
 
-    private int gameState = START_GAME_STATE;
+    private GameStateEnum gameState = GameStateEnum.START_GAME_STATE;
     private BufferedImage gameOverButtonImage;
 
-    @SuppressWarnings("unchecked")
-    private AudioClip jumpSound;
-    @SuppressWarnings("unchecked")
-    private AudioClip deadSound;
-    @SuppressWarnings("unchecked")
-    private AudioClip scoreUpSound;
-
+    private EstadoDinossauro estadoDinossauro;
 
     public GameScreen() {
         thread = new Thread(this);
         gameOverButtonImage = Resource.getResourceImage("data/gameover_text.png");
-        character = new MainCharacter();
-        character.setX(50); //empurra o dino um pouco pra frente
-        character.setY(60);
+
         dinossaurs = new ArrayList<>();
-        dinossaurs.add(character);
+
+        for (int i = 0; i < QUANTIDADE_DINOS; i++) {
+            MainCharacter character = new MainCharacter();
+            character.setX(50); //empurra o dino um pouco pra frente
+            character.setY(60);
+            character.cerebro = NeuralNetwork.RNA_CriarRedeNeural(6, 6, 6, 2);
+            dinossaurs.add(character);
+        }
+
+        estadoDinossauro = new EstadoDinossauro();
+
         land = new Land(GameWindow.SCREEN_WIDTH);
         clouds = new Clouds();
-        enemiesManager = new EnemiesManager(character, this);
-
-
-        try {
-            jumpSound = Applet.newAudioClip(new URL("file", "", "data/jump.wav"));
-            deadSound = Applet.newAudioClip(new URL("file", "", "data/dead.wav"));
-            scoreUpSound = Applet.newAudioClip(new URL("file", "", "data/scoreup.wav"));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        enemiesManager = new EnemiesManager();
+        GERACAO++;
     }
 
     public void startGame() {
         thread.start();
-    }
-
-    public void plusScore(int score) {
-        this.score += score;
-        scoreUpSound.play();
     }
 
     public void paint(Graphics g) {
@@ -87,28 +77,50 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         //g.drawLine(0, (int)GROUNDy, getWidth(), (int)GROUNDy); //DESENHA O CHÃO
 
         g.setColor(Color.BLACK);
-        g.drawString("HI " + character.score, 500, 20);
 
-        switch (gameState) {
-            case START_GAME_STATE:
-                character.draw(g);
-                break;
-            case GAME_PLAYING_STATE:
-                clouds.draw(g);
-                land.draw(g);
-                character.draw(g);
-                enemiesManager.draw(g);
-                g.setColor(Color.BLACK);
-                g.drawString("HI " + score, 300, 20);
-                break;
-            case GAME_OVER_STATE:
-                clouds.draw(g);
-                land.draw(g);
-                character.draw(g);
-                enemiesManager.draw(g);
-                g.drawImage(gameOverButtonImage, 100, 50, null);
-                break;
-        }
+        //g.drawString("HI " + character.score, 500, 20);
+
+        dinossaurs.forEach(dino -> {
+
+            g.drawString("Dinos total: " + dinossaurs.size(), 40, GameWindow.SCREEN_HEIGHT - 240);
+            g.drawString("Dinos vivos: " + (dinossaurs.stream().filter(MainCharacter::isAlive).count()), 40, GameWindow.SCREEN_HEIGHT - 220);
+            g.drawString("Distancia   do Prox Obstáculo: " + enemiesManager.getDistanciaAtePersonagem(), 40, GameWindow.SCREEN_HEIGHT - 200);
+            g.drawString("Altura      do Prox Obstáculo: " + enemiesManager.getEnemy().getBound().getY(), 40, GameWindow.SCREEN_HEIGHT - 160);
+            g.drawString("Largura     do Prox Obstáculo: " + enemiesManager.getEnemy().getBound().getWidth(), 40, GameWindow.SCREEN_HEIGHT - 180);
+            g.drawString("Comprimento do Prox Obstáculo: " + enemiesManager.getEnemy().getBound().getHeight(), 40, GameWindow.SCREEN_HEIGHT - 140);
+            g.drawString("Velocidade: " + VELOCIDADE, 40, GameWindow.SCREEN_HEIGHT - 120);
+            g.drawString("Geração: " + GERACAO, 40, GameWindow.SCREEN_HEIGHT - 100);
+
+            switch (gameState) {
+
+                case START_GAME_STATE:
+                    dino.draw(g);
+                    break;
+                case GAME_PLAYING_STATE:
+                    clouds.draw(g);
+                    land.draw(g);
+                    if (dino.isAlive())
+                        dino.draw(g);
+                    enemiesManager.draw(g);
+                    g.setColor(Color.BLACK);
+
+                    break;
+                case GAME_OVER_STATE:
+                    clouds.draw(g);
+                    land.draw(g);
+                    dino.draw(g);
+                    enemiesManager.draw(g);
+                    g.drawImage(gameOverButtonImage, 100, 50, null);
+                    try {
+                        Thread.sleep(1000); //espera 2 segundo e reinicia o jogo
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    gameState = GameStateEnum.GAME_PLAYING_STATE;
+                    resetGame();
+                    break;
+            }
+        });
     }
 
 
@@ -124,19 +136,20 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
             switch (gameState) {
                 case START_GAME_STATE:
                     if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                        gameState = GAME_PLAYING_STATE;
+                        gameState = GameStateEnum.GAME_PLAYING_STATE;
                     }
                     break;
                 case GAME_PLAYING_STATE:
                     if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                        character.jump();
+                        dinossaurs.get(2).jump();//TODO
                     } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                        character.down(true);
+                        //dinossaurs.get(1).down(true);//TODO
                     }
                     break;
                 case GAME_OVER_STATE:
+                    boolean todosMortos = !dinossaurs.stream().allMatch(dino -> dino.isAlive());
                     if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                        gameState = GAME_PLAYING_STATE;
+                        gameState = GameStateEnum.GAME_PLAYING_STATE;
                         resetGame();
                     }
                     break;
@@ -148,9 +161,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         isKeyPressed = false;
-        if (gameState == GAME_PLAYING_STATE) {
+        if (gameState == GameStateEnum.GAME_PLAYING_STATE) {
             if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                character.down(false);
+                //character.down(false);
             }
         }
     }
@@ -167,16 +180,21 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         while (true) {
 
             try {
-                for (int i = 0; i < 2; i++) {
+                dinossaurs.forEach(dino -> {
+                    EstadoDinoEnum estadoDinoEnum = estadoDinossauro.controlarEstadoDinossauros(dino, enemiesManager.getEnemy());
 
-                    MainCharacter mainCharacter = new MainCharacter();
-                }
+                    if (estadoDinoEnum.equals(EstadoDinoEnum.PULAR)) {
+                        dino.jump();
+                    } else if (estadoDinoEnum.equals(EstadoDinoEnum.ABAIXAR)) {
+                        dino.down(true);
+                    }
+                    update(dino);
 
+                });
 
-                update();
                 repaint();
                 //Thread.sleep(msSleep, nanoSleep);
-                Thread.sleep(20);
+                Thread.sleep(25);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -184,29 +202,33 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    public void update() {
+    public void update(MainCharacter character) {
         switch (gameState) {
             case GAME_PLAYING_STATE:
                 character.update();
                 land.update();
                 clouds.update();
-                enemiesManager.update();
+                enemiesManager.update(character);
 
-                if (!character.isAlive()) {
-                    gameState = GAME_OVER_STATE;
+                if (dinossaurs.stream().allMatch(dino -> !dino.isAlive())) {
+                    gameState = GameStateEnum.GAME_OVER_STATE;
                 }
                 break;
         }
     }
 
     private void resetGame() {
-        character.setX(50);
-        character.setY(50);
-        character.setAlive(true);
-        enemiesManager.reset();
+        GERACAO++;
+        for (MainCharacter dino : dinossaurs) {
+            dino.setX(50);
+            dino.setY(50);
+            dino.setAlive(true);
+        }
+        //clonar os 2 melhores
 
-//        character.dead(false);
-//        character.reset();
+
+        //enemiesManager.reset();
+        enemiesManager = new EnemiesManager();
     }
 
 }
