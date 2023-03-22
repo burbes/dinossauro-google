@@ -6,9 +6,9 @@ public class EstadoDinossauro {
 
     }
 
-    public EstadoDinoEnum controlarEstadoDinossauros(MainCharacter dinossauro, Enemy enemy) {
+    public MainCharacterStateEnum controlarEstadoDinossauros(MainCharacter dinossauro, Enemy enemy) {
 
-        EstadoDinoEnum estadoDinoEnum = EstadoDinoEnum.CORRER;
+        MainCharacterStateEnum estadoDinoEnum = MainCharacterStateEnum.NORMAL_RUN;
         double[] saida = new double[10];
         double[] entrada = new double[10];
 
@@ -28,15 +28,15 @@ public class EstadoDinossauro {
                 NeuralNetwork.RNA_CopiarDaSaida(dinossauro.cerebro, saida);/// Extraindo a decisão para vetor ''saida''
 
                 if (saida[0] == 0.0 && saida[1] == 0.0) {
-                    estadoDinoEnum = EstadoDinoEnum.CORRER;
+                    estadoDinoEnum = MainCharacterStateEnum.NORMAL_RUN;
                 } else {
                     if (saida[0] != 0.0) {
-                        estadoDinoEnum = EstadoDinoEnum.PULAR;
+                        estadoDinoEnum = MainCharacterStateEnum.JUMPING;
                     } else if (saida[1] != 0.0) {
-                        estadoDinoEnum = EstadoDinoEnum.ABAIXAR;
+                        estadoDinoEnum = MainCharacterStateEnum.DOWN_RUN;
                     }
                 }
-                System.out.println("Dino DNA: " + dinossauro.DNA + " estadoDinoEnum: " + estadoDinoEnum.name());
+                //System.out.println("Dino DNA: " + dinossauro.DNA + " estadoDinoEnum: " + estadoDinoEnum.name());
 
             }
 

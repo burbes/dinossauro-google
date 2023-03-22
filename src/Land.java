@@ -10,17 +10,17 @@ public class Land {
     private BufferedImage imageLand1;
     private BufferedImage imageLand2;
     private BufferedImage imageLand3;
-
     private List<ImageLand> listLand;
-    public Land(int width) {
+
+    public Land() {
 
         imageLand1 = Resource.getResourceImage("data/land1.png");
         imageLand2 = Resource.getResourceImage("data/land2.png");
         imageLand3 = Resource.getResourceImage("data/land3.png");
 
-        int numberOfImageLand = width / imageLand1.getWidth() + 2;
-        listLand = new ArrayList<ImageLand>();
-        for(int i = 0; i < numberOfImageLand; i++) {
+        int numberOfImageLand = GameWindow.SCREEN_WIDTH / imageLand1.getWidth() + 2;
+        listLand = new ArrayList<>();
+        for (int i = 0; i < numberOfImageLand; i++) {
             ImageLand imageLand = new ImageLand();
             imageLand.posX = i * imageLand1.getWidth();
             imageLand.image = getImage();
@@ -29,12 +29,12 @@ public class Land {
     }
 
 
-    public void update(){
-        for (ImageLand imageLand : listLand){
+    public void update() {
+        for (ImageLand imageLand : listLand) {
             imageLand.posX--;
         }
-        ImageLand firstElement = listLand.get(0);
-        if(firstElement.posX + imageLand1.getWidth() < 0){
+        ImageLand firstElement = listLand.stream().findFirst().get();
+        if (firstElement.posX + imageLand1.getWidth() < 0) {
             firstElement.posX = listLand.get(listLand.size() - 1).posX + imageLand1.getWidth();
             listLand.add(firstElement);
             listLand.remove(0);
@@ -42,8 +42,8 @@ public class Land {
     }
 
     public void draw(Graphics g) {
-        for(ImageLand imgLand : listLand) {
-            g.drawImage(imgLand.image, (int) imgLand.posX, (int)GameScreen.GROUNDy - 20, null);
+        for (ImageLand imgLand : listLand) {
+            g.drawImage(imgLand.image, (int) imgLand.posX, (int) GameScreen.GROUNDy - 20, null);
         }
     }
 
@@ -52,10 +52,13 @@ public class Land {
         Random rand = new Random();
 
         int i = rand.nextInt(3);
-        switch (i){
-            case 0 : return imageLand1;
-            case 1 : return imageLand3;
-            default : return imageLand2;
+        switch (i) {
+            case 0:
+                return imageLand1;
+            case 1:
+                return imageLand3;
+            default:
+                return imageLand2;
         }
     }
 

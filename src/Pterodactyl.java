@@ -1,34 +1,45 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
-public class Cactus extends Enemy {
+public class Pterodactyl extends Enemy {
 
-    private BufferedImage image;
-    private int posX, posY;
+    private float posX, posY;
 
     private Rectangle rect;
+
+    private Animation flyingAnim;
     private boolean isScoreGot = false;
 
-    public Cactus() {
-        image = Resource.getResourceImage("data/cactus1.png");
-        posX = GameWindow.SCREEN_WIDTH - 200;
-        posY = 65;
+    private Random rand;
+    public Pterodactyl() {
+
+        rand = new Random();
+        flyingAnim = new Animation(90);
+        flyingAnim.addFrame(Resource.getResourceImage("data/pterodacty.jpg"));
+        flyingAnim.addFrame(Resource.getResourceImage("data/pterodacty2.jpg"));
+
+        posX = GameWindow.SCREEN_WIDTH - 100;
+        posY = getRandomNumberBetween0And150();
         rect = new Rectangle();
     }
-
+    public int getRandomNumberBetween0And150() {
+        return rand.nextInt(101);
+    }
     @Override
     public void draw(Graphics g) {
-        g.drawImage(image, posX, posY, null);
+        g.drawImage(flyingAnim.getFrame(), (int)posX, (int)posY, null);
     }
 
     @Override
     public void update() {
-        posX -= 10;
-        rect.x = posX;
-        rect.y = posY;
-        rect.width = image.getWidth();
-        rect.height = image.getHeight();
+        flyingAnim.updateFrame();
+        posX -=15;
 
+        rect.x = (int)posX;
+        rect.y = (int)posY;
+        rect.width = flyingAnim.getFrame().getWidth();
+        rect.height = flyingAnim.getFrame().getHeight();
     }
 
     @Override
@@ -43,9 +54,6 @@ public class Cactus extends Enemy {
         posY = y;
     }
 
-    public void setImage(BufferedImage image){
-        this.image = image;
-    }
     @Override
     public boolean isOutOfScreen() {
         if(posX < 0) {

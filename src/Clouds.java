@@ -2,11 +2,12 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Clouds {
 
-
+    private int NUMBER_OF_CLOUDS = 20;
 
     private BufferedImage cloudImage;
     private List<Cloud> clouds;
@@ -17,41 +18,29 @@ public class Clouds {
 
         clouds = new ArrayList<Cloud>();
 
+        generateClouds();
 
-        Cloud imageCloud = new Cloud();
-        imageCloud.posX = 0;
-        imageCloud.posY = 30;
-        clouds.add(imageCloud);
+    }
 
-        imageCloud = new Cloud();
-        imageCloud.posX = 150;
-        imageCloud.posY = 40;
-        clouds.add(imageCloud);
-
-        imageCloud = new Cloud();
-        imageCloud.posX = 300;
-        imageCloud.posY = 50;
-        clouds.add(imageCloud);
-
-        imageCloud = new Cloud();
-        imageCloud.posX = 450;
-        imageCloud.posY = 20;
-        clouds.add(imageCloud);
-
-        imageCloud = new Cloud();
-        imageCloud.posX = 600;
-        imageCloud.posY = 60;
-        clouds.add(imageCloud);
-
+    private void generateClouds() {
+        int initialPosX = GameWindow.SCREEN_WIDTH;
+        int posYOffset = 30;
+        int distanceBetweenClouds = 150;
+        for (int i = 0; i < NUMBER_OF_CLOUDS; i++) {
+            Cloud imageCloud = new Cloud();
+            imageCloud.posX = initialPosX - (i * distanceBetweenClouds);
+            imageCloud.posY = posYOffset + (i * 10) % 40; // Este cálculo determina a posição Y de cada nuvem
+            clouds.add(imageCloud);
+        }
     }
 
     public void update(){
         for (Cloud cloud : clouds){
             cloud.posX -= 2;//velocidade que as nuvens se movem
         }
-        Cloud firstCloud = clouds.get(0);
+        Cloud firstCloud = clouds.stream().min(Comparator.comparing(c -> c.posX)).get();
         if(firstCloud.posX + cloudImage.getWidth() < 0){
-            firstCloud.posX = 600;
+            firstCloud.posX = GameWindow.SCREEN_WIDTH;
             clouds.remove(firstCloud);
             clouds.add(firstCloud);
         }
