@@ -1,15 +1,14 @@
+import enums.GameStateEnum;
+import enums.MainCharacterStateEnum;
+
 import javax.swing.*;
-import java.applet.Applet;
-import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class GameScreen extends JPanel implements Runnable, KeyListener {
 
@@ -20,13 +19,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     public static float VELOCIDADE = 3f;
     public static final float GRAVITY = 0.5f;
     public static final float GROUNDy = 110; // by pixel
-    public static final int QUANTIDADE_DINOS = 100;
+    public static final int QUANTIDADE_DINOS = 1000;
 
     private int GERACAO = 0;
-
-    ;
-//    private MainCharacter character1;
-//    private MainCharacter character2;
 
     private List<MainCharacter> dinossaurs;
     private boolean isKeyPressed;
@@ -49,11 +44,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         thread = new Thread(this);
         gameOverButtonImage = Resource.getResourceImage("data/gameover_text.png");
 
-        dinossaurs = new ArrayList<>();
-        for (int i = 0; i < QUANTIDADE_DINOS; i++) {
-            MainCharacter character = new MainCharacter();
-            dinossaurs.add(character);
-        }
+        inicializarDinossauros();
         estadoDinossauro = new EstadoDinossauro();
         land = new Land();
         clouds = new Clouds();
@@ -61,7 +52,27 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         GERACAO++;
         melhorScore = 0;
         scoreAtual = 0;
+    }
 
+    private List<MainCharacter> inicializarDinossauros() {
+
+        dinossaurs = new ArrayList<>();
+
+        for (int i = 0; i < QUANTIDADE_DINOS; i++) {
+            MainCharacter character = new MainCharacter();
+
+//            for (int j = 0; j < character.tamanhoDNA; j++) {
+//                if (DNA.DNADaVez[j] != null) {
+//                    character.DNA[j] = DNA.DNADaVez[i][j]; //TODO: NUNCA ESTÁ CAINDO AQUI
+//                } else {
+//                    character.DNA[j] = Uteis.getRandomValue();
+//                }
+//            }
+            dinossaurs.add(character);
+            //NeuralNetwork.RNA_CopiarVetorParaCamadas(dinossaurs.get(i).cerebro, dinossaurs.get(i).DNA);
+        }
+        DNA.inicializarDNA(dinossaurs); //JÁ INICIALIZOU
+        return dinossaurs;
     }
 
     public void startGame() {
@@ -69,22 +80,52 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         thread.start();
     }
 
+//    public void drawGraph(Graphics g){
+//
+//        int width = getWidth();
+//        int height = getHeight();
+//
+//        // Draw X and Y axes
+//        g.setColor(Color.BLACK);
+//        g.drawLine(700, GameWindow.SCREEN_HEIGHT-100, GameWindow.SCREEN_WIDTH-100, GameWindow.SCREEN_HEIGHT-100);
+//        g.drawLine(750, GameWindow.SCREEN_HEIGHT, 750, GameWindow.SCREEN_HEIGHT/2);
+//
+//        // Draw grid
+//        g.setColor(Color.LIGHT_GRAY);
+//        for (int i = 0; i < width; i += GameWindow.SCREEN_WIDTH) {
+//            g.drawLine(i, 0, i, height);
+//        }
+//        for (int i = 0; i < height; i += GameWindow.SCREEN_HEIGHT) {
+//            g.drawLine(0, i, width, i);
+//        }
+//
+//        // Draw your graph or shapes here
+//        // For example, draw a red line from (10, 10) to (100, 100)
+//        g.setColor(Color.RED);
+//        g.drawLine(10, 10, 100, 100);
+//
+//        g.setColor(Color.BLUE);
+//        for (int i = 0; i < xPoints.length; i++) {
+//            g.fillOval(xPoints[i] - 3, getHeight() - yPoints[i] - 3, 6, 6);
+//        }
+//    }
+
+    private int[] xPoints = {50, 150, 250, 350, 450};
+    private int[] yPoints = {100, 200, 150, 300, 250};
+
     public void paint(Graphics g) {
         super.paint(g);
 
         g.setColor(Color.decode("#f7f7f7"));
         g.fillRect(0, 0, getWidth(), getHeight());//DESENHA O QUADRADO DO FUNDO
-        //g.setColor(Color.red);//define cor vermelha pro chão
-        //g.drawLine(0, (int)GROUNDy, getWidth(), (int)GROUNDy); //DESENHA O CHÃO
 
         g.setColor(Color.BLACK);
 
         g.drawString("HI: " + scoreAtual, 500, 20);
 
-
-        g.drawString("Time Diff: " + (currentTime - startTime), 450, GameWindow.SCREEN_HEIGHT - 280);
-        g.drawString("Current Time: " + currentTime, 250, GameWindow.SCREEN_HEIGHT - 280);
-        g.drawString("Start Time: " + startTime, 40, GameWindow.SCREEN_HEIGHT - 280);
+        g.drawString("Time Diff: " + (currentTime - startTime) / 1000 + "s", 450, GameWindow.SCREEN_HEIGHT - 280);
+        g.drawString("Current Time: " + Uteis.getDateFormated(currentTime), 250, GameWindow.SCREEN_HEIGHT - 280);
+        g.drawString("Start Time: " + Uteis.getDateFormated(startTime), 40, GameWindow.SCREEN_HEIGHT - 280);
 
         g.drawString("Melhor Score: " + melhorScore, 40, GameWindow.SCREEN_HEIGHT - 260);
         g.drawString("Dinos total: " + dinossaurs.size(), 40, GameWindow.SCREEN_HEIGHT - 240);
@@ -97,6 +138,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
         g.drawString("Velocidade: " + VELOCIDADE, 40, GameWindow.SCREEN_HEIGHT - 120);
         g.drawString("Geração: " + GERACAO, 40, GameWindow.SCREEN_HEIGHT - 100);
+        g.drawString("Naelson Matheus Junior naelsonmjunior@gmail.com ", GameWindow.SCREEN_WIDTH - 400, GameWindow.SCREEN_HEIGHT - 100);
 
         switch (gameState) {
 
@@ -131,6 +173,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
                 resetGame();
                 break;
         }
+//        drawGraph(g);
     }
 
 
@@ -220,16 +263,11 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         switch (gameState) {
             case GAME_PLAYING_STATE:
 
-                for (int i = 0; i < dinossaurs.size(); i++) {
-                    MainCharacter dino = dinossaurs.get(i);
+                for (MainCharacter dino : dinossaurs) {
                     dino.update();
                 }
+                scoreAtual = dinossaurs.stream().map(MainCharacter::getScore).max(Comparator.comparing(d -> d)).orElse(0);
                 enemiesManager.update();
-                Optional<MainCharacter> any = dinossaurs.stream().filter(MainCharacter::isAlive).findAny();
-                if (any.isPresent()) {
-                    scoreAtual = any.get().getScore();
-                    System.out.println("Dino " + any.get() + " scoreAtual " + scoreAtual);
-                }
                 land.update();
                 clouds.update();
 
@@ -242,18 +280,18 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
     private void resetGame() {
         melhorScore();
-        GERACAO++;
-        for (MainCharacter dino : dinossaurs) {
-            dino.setX(50);
-            dino.setY(50);
-            dino.setAlive(true);
-            dino.score = 0;
-        }
-        //clonar os 2 melhores
 
+        //clonar o melhor
+        List<MainCharacter> os2melhorDino = dinossaurs.stream().sorted(Comparator.comparing(MainCharacter::getScore).reversed()).limit(2).collect(Collectors.toList());
+        List<MainCharacter> newDinos = inicializarDinossauros();
+        List<MainCharacter> dinosClonados = DNA.randomMutations(newDinos, os2melhorDino.toArray(MainCharacter[]::new));
+        dinossaurs = new ArrayList<>();
+//        dinossaurs.add(melhorDino);
+        dinossaurs.addAll(dinosClonados);
+        GERACAO++;
 
         enemiesManager.reset();
-//        enemiesManager = new EnemiesManager();
+        enemiesManager = new EnemiesManager(dinossaurs);
     }
 
     private void melhorScore() {

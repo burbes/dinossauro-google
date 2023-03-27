@@ -1,4 +1,4 @@
-import java.util.List;
+import enums.MainCharacterStateEnum;
 
 public class EstadoDinossauro {
 
@@ -34,9 +34,10 @@ public class EstadoDinossauro {
                         estadoDinoEnum = MainCharacterStateEnum.JUMPING;
                     } else if (saida[1] != 0.0) {
                         estadoDinoEnum = MainCharacterStateEnum.DOWN_RUN;
+
                     }
                 }
-                //System.out.println("Dino DNA: " + dinossauro.DNA + " estadoDinoEnum: " + estadoDinoEnum.name());
+                System.out.println("Dino DNA: " + dinossauro.DNA + " estadoDinoEnum: " + estadoDinoEnum.name());
 
             }
 
@@ -47,32 +48,6 @@ public class EstadoDinossauro {
         return enemyX - x;
     }
 
-//    double larguraProximoObstaculo(double x, double enemyHeight) {
-//        int indice = procurarProximoObstaculo(x);
-//        double largura = obstaculo[indice].sprite[obstaculo[indice].frameAtual].getLargura();
-//
-//        return enemyHeight - largura;
-//    }
-
-//    double comprimentoProximoObstaculo(double x) {
-//        int indice = procurarProximoObstaculo(x);
-//        double altura = obstaculo[indice].sprite[obstaculo[indice].frameAtual].getAltura();
-//
-//        return altura;
-//    }
-
-//    double alturaProximoObstaculo(double x) {
-//        int indice = procurarProximoObstaculo(x);
-//
-//        return obstaculo[indice].y;
-//    }
-
-//    double alturaComComprimentoProximoObstaculo(double x) {
-//        int indice = procurarProximoObstaculo(x);
-//        double comprimento = obstaculo[indice].sprite[obstaculo[indice].frameAtual].getAltura();
-//
-//        return (obstaculo[indice].y + comprimento);
-//    }
 
 
 }

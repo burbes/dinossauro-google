@@ -1,10 +1,7 @@
-import com.sun.tools.javac.Main;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 public class EnemiesManager {
@@ -46,7 +43,6 @@ public class EnemiesManager {
             e.update();
             for (MainCharacter mainCharacter : dinossaurs) {
                 if (e.isOver(mainCharacter) && !e.isScoreGot()) {
-                    //System.out.println("e.isOver(mainCharacter) && !e.isScoreGot()");
                     mainCharacter.upScore();
                     e.setScoreGot(true);
                 }
@@ -59,7 +55,6 @@ public class EnemiesManager {
                 distanciaAtePersonagem = mainCharacter.getX() - e.getBound().getX();
             }
             if (e.isOutOfScreen()) {
-                //mainCharacter.upScore();
                 enemies.remove(e);
                 enemies.add(getRandomEnemy());
             }

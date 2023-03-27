@@ -1,19 +1,26 @@
 
+import enums.MainCharacterStateEnum;
+
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
-public class MainCharacter {
+public class MainCharacter implements Cloneable {
 
-    int tamanhoDNA;
-    double[] DNA;
-    double fitness;
+    public static final int QUANTIDADE_ESCONDIDAS_LAYERS = 1;
+    public static final int QTD_NEURONIOS_ENTRADA = 6;
+    public static final int QTD_NEURONIOS_ESCONDIDA = 6;
+    public static final int QTD_NEURONIOS_SAIDA = 2;
+    public int tamanhoDNA;
+    public double[] DNA;
+    public double fitness;
 
     NeuralNetwork.RedeNeural cerebro;
 
@@ -41,7 +48,7 @@ public class MainCharacter {
     @SuppressWarnings("unchecked")
     private AudioClip scoreUpSound;
 
-    private Color color;
+    private Color color; //TODO
 
     public MainCharacter(){
         normalRunAnim = new Animation(90);
@@ -55,10 +62,12 @@ public class MainCharacter {
 
         setX(50); //empurra o dino um pouco pra frente
         setY(60);
-        cerebro = NeuralNetwork.RNA_CriarRedeNeural(6, 6, 6, 2);
+
+        cerebro = NeuralNetwork.RNA_CriarRedeNeural(QUANTIDADE_ESCONDIDAS_LAYERS, QTD_NEURONIOS_ENTRADA, QTD_NEURONIOS_ESCONDIDA, QTD_NEURONIOS_SAIDA);
+        tamanhoDNA = NeuralNetwork.RNA_QuantidadePesos(cerebro);
+        DNA = new double[tamanhoDNA];
 
         rect = new Rectangle();
-
         color = getRandomColor();
         try {
             jumpSound = Applet.newAudioClip(new URL("file", "", "data/jump.wav"));
@@ -188,8 +197,8 @@ public class MainCharacter {
     }
     public void upScore() {
         score += 20;
-        if(score % 100 == 0) {
-            //scoreUpSound.play();
+        if(score % 1000 == 0) {
+            scoreUpSound.play();
         }
     }
 
@@ -205,18 +214,28 @@ public class MainCharacter {
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MainCharacter that = (MainCharacter) o;
-        return tamanhoDNA == that.tamanhoDNA && Double.compare(that.fitness, fitness) == 0 && Float.compare(that.x, x) == 0 && Float.compare(that.y, y) == 0 && Float.compare(that.speedY, speedY) == 0 && Float.compare(that.speedX, speedX) == 0 && score == that.score && isAlive == that.isAlive && Arrays.equals(DNA, that.DNA) && Objects.equals(cerebro, that.cerebro) && Objects.equals(rect, that.rect) && state == that.state && Objects.equals(jumping, that.jumping) && Objects.equals(deathImage, that.deathImage) && Objects.equals(normalRunAnim, that.normalRunAnim) && Objects.equals(downRunAnim, that.downRunAnim) && Objects.equals(jumpSound, that.jumpSound) && Objects.equals(deadSound, that.deadSound) && Objects.equals(scoreUpSound, that.scoreUpSound) && Objects.equals(color, that.color);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        MainCharacter that = (MainCharacter) o;
+//        return tamanhoDNA == that.tamanhoDNA && Double.compare(that.fitness, fitness) == 0 && Float.compare(that.x, x) == 0 && Float.compare(that.y, y) == 0 && Float.compare(that.speedY, speedY) == 0 && Float.compare(that.speedX, speedX) == 0 && score == that.score && isAlive == that.isAlive && Arrays.equals(DNA, that.DNA) && Objects.equals(cerebro, that.cerebro) && Objects.equals(rect, that.rect) && state == that.state && Objects.equals(jumping, that.jumping) && Objects.equals(deathImage, that.deathImage) && Objects.equals(normalRunAnim, that.normalRunAnim) && Objects.equals(downRunAnim, that.downRunAnim) && Objects.equals(jumpSound, that.jumpSound) && Objects.equals(deadSound, that.deadSound) && Objects.equals(scoreUpSound, that.scoreUpSound) && Objects.equals(color, that.color);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int result = Objects.hash(tamanhoDNA, fitness, cerebro, x, y, speedY, speedX, rect, score, state, jumping, deathImage, normalRunAnim, downRunAnim, isAlive, jumpSound, deadSound, scoreUpSound, color);
+//        result = 31 * result + Arrays.hashCode(DNA);
+//        return result;
+//    }
+
 
     @Override
-    public int hashCode() {
-        int result = Objects.hash(tamanhoDNA, fitness, cerebro, x, y, speedY, speedX, rect, score, state, jumping, deathImage, normalRunAnim, downRunAnim, isAlive, jumpSound, deadSound, scoreUpSound, color);
-        result = 31 * result + Arrays.hashCode(DNA);
-        return result;
+    public MainCharacter clone() {
+        try {
+            return (MainCharacter) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError("Cloning not supported", e);
+        }
     }
 }
