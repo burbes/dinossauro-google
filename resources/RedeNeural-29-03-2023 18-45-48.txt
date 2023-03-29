@@ -1,0 +1,465 @@
+Quantidade de camadas escondidas: 1
+Quantidade de neuronios na camada de entrada: 7
+Quantidade de neuronios na primeira camada escondida: 7
+Quantidade de neuronios na camada de saida: 2
+
+GERAÇÃO: 1
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: 854.0			Peso 5: -32.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 729.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: 512.0	
+	Neuronio 3:
+		Peso 1: -237.0			Peso 2: 580.0			Peso 3: 562.0			Peso 4: -837.0			Peso 5: 998.0			Peso 6: -159.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 121.0			Peso 2: -847.0			Peso 3: -723.0			Peso 4: 181.0			Peso 5: 695.0			Peso 6: 989.0			Peso 7: -344.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 988.0			Peso 5: -81.0			Peso 6: -632.0			Peso 7: -78.0	
+	Neuronio 6:
+		Peso 1: -378.0			Peso 2: -273.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 938.0			Peso 6: 386.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 507.0			Peso 3: -978.0			Peso 4: 375.0			Peso 5: 970.0			Peso 6: -29.0			Peso 7: 392.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: 940.0			Peso 3: -122.0			Peso 4: -930.0			Peso 5: 919.0			Peso 6: -702.0			Peso 7: 243.0	
+	Neuronio 2:
+		Peso 1: 164.0			Peso 2: 469.0			Peso 3: -203.0			Peso 4: 681.0			Peso 5: -117.0			Peso 6: -801.0			Peso 7: 106.0	
+
+=====================
+GERAÇÃO: 2
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: 854.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -159.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: -344.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: -632.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 938.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 375.0			Peso 5: 970.0			Peso 6: -29.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: -702.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 3
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: -632.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 4
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 5
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 6
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 7
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 8
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 9
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 10
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 11
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 12
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 13
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 14
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 15
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 16
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 17
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 18
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 19
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================
+GERAÇÃO: 20
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: 971.0			Peso 2: 511.0			Peso 3: 676.0			Peso 4: -868.0			Peso 5: 518.0			Peso 6: -669.0			Peso 7: -823.0	
+	Neuronio 2:
+		Peso 1: 165.0			Peso 2: 353.0			Peso 3: -562.0			Peso 4: -450.0			Peso 5: 494.0			Peso 6: 253.0			Peso 7: -217.0	
+	Neuronio 3:
+		Peso 1: 16.0			Peso 2: 580.0			Peso 3: 730.0			Peso 4: -837.0			Peso 5: 702.0			Peso 6: -797.0			Peso 7: 893.0	
+	Neuronio 4:
+		Peso 1: 352.0			Peso 2: -833.0			Peso 3: -723.0			Peso 4: -368.0			Peso 5: 0.0			Peso 6: 989.0			Peso 7: 928.0	
+	Neuronio 5:
+		Peso 1: 577.0			Peso 2: -40.0			Peso 3: 617.0			Peso 4: 586.0			Peso 5: -81.0			Peso 6: 777.0			Peso 7: 224.0	
+	Neuronio 6:
+		Peso 1: -29.0			Peso 2: -333.0			Peso 3: 185.0			Peso 4: 491.0			Peso 5: 906.0			Peso 6: -856.0			Peso 7: -506.0	
+	Neuronio 7:
+		Peso 1: 606.0			Peso 2: 470.0			Peso 3: -656.0			Peso 4: 351.0			Peso 5: 970.0			Peso 6: 757.0			Peso 7: -17.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -682.0			Peso 2: -374.0			Peso 3: 294.0			Peso 4: -288.0			Peso 5: -927.0			Peso 6: 786.0			Peso 7: 878.0	
+	Neuronio 2:
+		Peso 1: -394.0			Peso 2: 469.0			Peso 3: 738.0			Peso 4: 681.0			Peso 5: 27.0			Peso 6: -801.0			Peso 7: 966.0	
+
+=====================

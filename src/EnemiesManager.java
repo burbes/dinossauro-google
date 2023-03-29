@@ -1,11 +1,7 @@
-import com.sun.tools.javac.Main;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 
 public class EnemiesManager {
 
@@ -35,18 +31,26 @@ public class EnemiesManager {
     }
 
     public Enemy getEnemy() {
-        return enemies.stream().findFirst().orElseGet(() -> {
-            enemies.add(getRandomCactus());
-            return enemies.stream().findFirst().get();
-        });
+        Optional<Enemy> firstEnemy = enemies.stream().findFirst();
+        if (firstEnemy.isPresent()) {
+            return firstEnemy.get();
+        } else {
+            Enemy newEnemy = getRandomEnemy();
+            enemies.add(newEnemy);
+            return newEnemy;
+        }
     }
 
     public void update() {
-        for (Enemy e : enemies) {
+        List<Enemy> enemiesToRemove = new ArrayList<>();
+        List<Enemy> enemiesToAdd = new ArrayList<>();
+
+        Iterator<Enemy> iterator = enemies.iterator();
+        while (iterator.hasNext()) {
+            Enemy e = iterator.next();
             e.update();
             for (MainCharacter mainCharacter : dinossaurs) {
                 if (e.isOver(mainCharacter) && !e.isScoreGot()) {
-                    //System.out.println("e.isOver(mainCharacter) && !e.isScoreGot()");
                     mainCharacter.upScore();
                     e.setScoreGot(true);
                 }
@@ -54,16 +58,22 @@ public class EnemiesManager {
                 if (mainCharacter.getBound().intersects(e.getBound())) {
                     mainCharacter.setAlive(false);
                     mainCharacter.dead(true);
-
                 }
                 distanciaAtePersonagem = mainCharacter.getX() - e.getBound().getX();
             }
             if (e.isOutOfScreen()) {
-                //mainCharacter.upScore();
-                enemies.remove(e);
-                enemies.add(getRandomEnemy());
+                enemiesToRemove.add(e);
+                enemiesToAdd.add(getRandomEnemy());
             }
+
+//            if (currentScore >= 100 && currentScore % 100 == 0 && currentScore > lastScoreWhenEnemyAdded*2) {
+//                enemiesToAdd.add(getRandomEnemy());
+//                lastScoreWhenEnemyAdded = currentScore;
+//            }
         }
+
+        enemies.removeAll(enemiesToRemove);
+        enemies.addAll(enemiesToAdd);
     }
 
     public void draw(Graphics g) {
