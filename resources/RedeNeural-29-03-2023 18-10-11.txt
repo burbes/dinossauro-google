@@ -1,0 +1,28 @@
+Quantidade de camadas escondidas: 1
+Quantidade de neuronios na camada de entrada: 7
+Quantidade de neuronios na primeira camada escondida: 7
+Quantidade de neuronios na camada de saida: 2
+
+GERAÇÃO: 1
+Camada escondida 1:
+	Neuronio 1:
+		Peso 1: -671.0			Peso 2: 482.0			Peso 3: 952.0			Peso 4: -561.0			Peso 5: 719.0			Peso 6: 863.0			Peso 7: 261.0	
+	Neuronio 2:
+		Peso 1: 254.0			Peso 2: 40.0			Peso 3: 344.0			Peso 4: 736.0			Peso 5: 807.0			Peso 6: 113.0			Peso 7: 720.0	
+	Neuronio 3:
+		Peso 1: -459.0			Peso 2: 887.0			Peso 3: 207.0			Peso 4: 586.0			Peso 5: -914.0			Peso 6: 574.0			Peso 7: -96.0	
+	Neuronio 4:
+		Peso 1: -642.0			Peso 2: -154.0			Peso 3: 246.0			Peso 4: 542.0			Peso 5: 185.0			Peso 6: -715.0			Peso 7: -132.0	
+	Neuronio 5:
+		Peso 1: 462.0			Peso 2: -677.0			Peso 3: -852.0			Peso 4: 657.0			Peso 5: 900.0			Peso 6: 680.0			Peso 7: -695.0	
+	Neuronio 6:
+		Peso 1: -110.0			Peso 2: -988.0			Peso 3: -976.0			Peso 4: 233.0			Peso 5: -63.0			Peso 6: -701.0			Peso 7: -352.0	
+	Neuronio 7:
+		Peso 1: 305.0			Peso 2: -575.0			Peso 3: 458.0			Peso 4: 172.0			Peso 5: 77.0			Peso 6: -136.0			Peso 7: -422.0	
+Camada de saida:
+	Neuronio 1:
+		Peso 1: -410.0			Peso 2: -52.0			Peso 3: -976.0			Peso 4: -512.0			Peso 5: 679.0			Peso 6: -257.0			Peso 7: 901.0	
+	Neuronio 2:
+		Peso 1: 99.0			Peso 2: 452.0			Peso 3: -938.0			Peso 4: -820.0			Peso 5: 585.0			Peso 6: -539.0			Peso 7: -453.0	
+
+=====================

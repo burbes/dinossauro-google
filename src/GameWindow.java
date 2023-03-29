@@ -11,7 +11,7 @@ public class GameWindow  extends JFrame {
     public GameWindow() {
         super("Java T-Rex game");
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-//        setLocation(400, 200);
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
@@ -25,10 +25,8 @@ public class GameWindow  extends JFrame {
         gameScreen.startGame();
     }
 
-
     public static void main(String args[]) {
         (new GameWindow()).startGame();
     }
-
 
 }

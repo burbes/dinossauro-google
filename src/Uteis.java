@@ -1,4 +1,7 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
+import java.util.TimeZone;
 
 public class Uteis {
 
@@ -7,10 +10,13 @@ public class Uteis {
 
     public static double getRandomValue() {
         return (random.nextInt(20001) / 10.0) - 1000.0;
-        //return (random.nextInt(201) / 10.0) - 10.0;
-        //return (random.nextInt(2001) / 1000.0) - 1.0;
-        //return (random.nextInt(2001) / 10000.0) - 0.1;
+    }
 
-        //return random.nextInt(3) - 1;
+    public static String getDateFormated(long currentTimeMillis){
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH-mm-ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String formattedTime = sdf.format(new Date(currentTimeMillis));
+        return formattedTime;
     }
 }

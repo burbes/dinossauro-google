@@ -1,19 +1,20 @@
-
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.Random;
 
 public class MainCharacter {
 
+    public static final int QUANTIDADE_ESCONDIDAS_LAYERS = 1;
+    public static final int QTD_NEURONIOS_ENTRADA = 6;
+    public static final int QTD_NEURONIOS_ESCONDIDA = 6;
+    public static final int QTD_NEURONIOS_SAIDA = 2;
+
     int tamanhoDNA;
-    double[] DNA;
-    double fitness;
+    int fitness = 0;
 
     NeuralNetwork.RedeNeural cerebro;
 
@@ -43,7 +44,7 @@ public class MainCharacter {
 
     private Color color;
 
-    public MainCharacter(){
+    public MainCharacter() {
         normalRunAnim = new Animation(90);
         normalRunAnim.addFrame(Resource.getResourceImage("data/main-character1.png"));
         normalRunAnim.addFrame(Resource.getResourceImage("data/main-character2.png"));
@@ -55,7 +56,9 @@ public class MainCharacter {
 
         setX(50); //empurra o dino um pouco pra frente
         setY(60);
-        cerebro = NeuralNetwork.RNA_CriarRedeNeural(6, 6, 6, 2);
+
+        cerebro = NeuralNetwork.RNA_CriarRedeNeural(QUANTIDADE_ESCONDIDAS_LAYERS, QTD_NEURONIOS_ENTRADA, QTD_NEURONIOS_ESCONDIDA, QTD_NEURONIOS_SAIDA);
+        tamanhoDNA = NeuralNetwork.RNA_QuantidadePesos(cerebro);
 
         rect = new Rectangle();
 
@@ -69,37 +72,37 @@ public class MainCharacter {
         }
     }
 
-    private Color getRandomColor(){
+    private Color getRandomColor() {
         Random rand = new Random(3);
-        Color color =Color.GRAY;
-        if(rand.nextInt() == 0){
-            color=  Color.BLACK;
+        Color color = Color.GRAY;
+        if (rand.nextInt() == 0) {
+            color = Color.BLACK;
         }
-        if(rand.nextInt() == 1){
-            color=  Color.BLUE;
+        if (rand.nextInt() == 1) {
+            color = Color.BLUE;
         }
-        if(rand.nextInt() == 2){
-            color=  Color.RED;
+        if (rand.nextInt() == 2) {
+            color = Color.RED;
         }
-        if(rand.nextInt() == 3){
-            color=  Color.GREEN;
+        if (rand.nextInt() == 3) {
+            color = Color.GREEN;
         }
         return color;
     }
 
-    public void update(){
+    public void update() {
         normalRunAnim.updateFrame();
         downRunAnim.updateFrame();
         //all these line code for jumping
-        if(y >= GameScreen.GROUNDy - normalRunAnim.getFrame().getHeight()){ //  para subtrair o tamanho do personagem
+        if (y >= GameScreen.GROUNDy - normalRunAnim.getFrame().getHeight()) { //  para subtrair o tamanho do personagem
             speedY = 0;
-            y = GameScreen.GROUNDy -  normalRunAnim.getFrame().getHeight();
-            if(state != MainCharacterStateEnum.DOWN_RUN) {
+            y = GameScreen.GROUNDy - normalRunAnim.getFrame().getHeight();
+            if (state != MainCharacterStateEnum.DOWN_RUN) {
                 state = MainCharacterStateEnum.NORMAL_RUN;
             }
         } else {
-            speedY+=GameScreen.GRAVITY;
-            y+=speedY;
+            speedY += GameScreen.GRAVITY;
+            y += speedY;
         }
         rect.x = (int) x;
         rect.y = (int) y;
@@ -111,8 +114,8 @@ public class MainCharacter {
         return rect;
     }
 
-    public void draw(Graphics g){
-        switch(state) {
+    public void draw(Graphics g) {
+        switch (state) {
             case NORMAL_RUN:
                 g.drawImage(normalRunAnim.getFrame(), (int) x, (int) y, null);
                 break;
@@ -123,13 +126,13 @@ public class MainCharacter {
                 g.drawImage(downRunAnim.getFrame(), (int) x, (int) (y + 20), null);
                 break;
             case DEATH:
-                g.drawImage(deathImage, (int) x-10, (int) y-10, null);
+                g.drawImage(deathImage, (int) x - 10, (int) y - 10, null);
                 break;
         }
     }
 
-    public void jump(){
-        if(state != MainCharacterStateEnum.JUMPING){
+    public void jump() {
+        if (state != MainCharacterStateEnum.JUMPING) {
             speedY = -10f;
             y += speedY;
             state = MainCharacterStateEnum.JUMPING;
@@ -137,10 +140,10 @@ public class MainCharacter {
     }
 
     public void down(boolean isDown) {
-        if(state == MainCharacterStateEnum.JUMPING) {
+        if (state == MainCharacterStateEnum.JUMPING) {
             return;
         }
-        if(isDown) {
+        if (isDown) {
             state = MainCharacterStateEnum.DOWN_RUN;
         } else {
             state = MainCharacterStateEnum.NORMAL_RUN;
@@ -186,37 +189,29 @@ public class MainCharacter {
     public void setAlive(boolean alive) {
         isAlive = alive;
     }
+
     public void upScore() {
-        score += 20;
-        if(score % 100 == 0) {
-            //scoreUpSound.play();
+        this.score += 20;
+        if (this.score % 1000 == 0) {
+            scoreUpSound.play();
+            this.fitness++;
         }
     }
 
-    public int getScore(){
+    public int getScore() {
         return score;
     }
 
+    public int getFitness() {
+        return fitness;
+    }
+
     public void dead(boolean isDeath) {
-        if(isDeath) {
+        if (isDeath) {
             state = MainCharacterStateEnum.DEATH;
         } else {
             state = MainCharacterStateEnum.NORMAL_RUN;
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MainCharacter that = (MainCharacter) o;
-        return tamanhoDNA == that.tamanhoDNA && Double.compare(that.fitness, fitness) == 0 && Float.compare(that.x, x) == 0 && Float.compare(that.y, y) == 0 && Float.compare(that.speedY, speedY) == 0 && Float.compare(that.speedX, speedX) == 0 && score == that.score && isAlive == that.isAlive && Arrays.equals(DNA, that.DNA) && Objects.equals(cerebro, that.cerebro) && Objects.equals(rect, that.rect) && state == that.state && Objects.equals(jumping, that.jumping) && Objects.equals(deathImage, that.deathImage) && Objects.equals(normalRunAnim, that.normalRunAnim) && Objects.equals(downRunAnim, that.downRunAnim) && Objects.equals(jumpSound, that.jumpSound) && Objects.equals(deadSound, that.deadSound) && Objects.equals(scoreUpSound, that.scoreUpSound) && Objects.equals(color, that.color);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(tamanhoDNA, fitness, cerebro, x, y, speedY, speedX, rect, score, state, jumping, deathImage, normalRunAnim, downRunAnim, isAlive, jumpSound, deadSound, scoreUpSound, color);
-        result = 31 * result + Arrays.hashCode(DNA);
-        return result;
-    }
 }

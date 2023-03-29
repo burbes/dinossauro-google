@@ -1,18 +1,11 @@
 import java.io.*;
-import java.util.ArrayList;
+import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 
 public class NeuralNetwork {
 
     static final double TAXA_APRENDIZADO = 0.1;
-    static final double TAXA_PESO_INICIAL = 1.0;
     static final int BIAS = 1;
-
-   /* private static void train(RedeNeural net, double[] input, double[] target) {
-        NeuralNetwork.RNA_CopiarParaEntrada(net, input);
-        NeuralNetwork.RNA_CalcularSaida(net);
-        NeuralNetwork.RNA_SalvarRede(net, target);
-        NeuralNetwork.RNA_QuantidadePesos(net);
-    }*/
 
     static class Neuronio {
         double[] Peso = new double[]{};
@@ -28,7 +21,7 @@ public class NeuralNetwork {
 
     static class RedeNeural {
         Camada CamadaEntrada = new Camada();
-        Camada[] CamadaEscondida = new Camada[]{ };
+        Camada[] CamadaEscondida = new Camada[]{};
         Camada CamadaSaida = new Camada();
         int QuantidadeEscondidas = 0;
     }
@@ -49,38 +42,7 @@ public class NeuralNetwork {
         }
     }
 
-    //METODO INIT
-    static RedeNeural RNA_CarregarRede(String fileName) {
-        int i, j, k;
-
-        try (DataInputStream dis = new DataInputStream(new FileInputStream(fileName))) {
-            int QtdEscondida = dis.readInt();
-            int QtdNeuroEntrada = dis.readInt();
-            int QtdNeuroEscondida = dis.readInt();
-            int QtdNeuroSaida = dis.readInt();
-
-            RedeNeural Temp = RNA_CriarRedeNeural(QtdEscondida, QtdNeuroEntrada, QtdNeuroEscondida, QtdNeuroSaida);
-
-            for (k = 0; k < Temp.QuantidadeEscondidas; k++) {
-                for (i = 0; i < Temp.CamadaEscondida[k].QuantidadeNeuronios; i++) {
-                    for (j = 0; j < Temp.CamadaEscondida[k].Neuronios[i].QuantidadeLigacoes; j++) {
-                        Temp.CamadaEscondida[k].Neuronios[i].Peso[j] = dis.readDouble();
-                    }
-                }
-            }
-            for (i = 0; i < Temp.CamadaSaida.QuantidadeNeuronios; i++) {
-                for (j = 0; j < Temp.CamadaSaida.Neuronios[i].QuantidadeLigacoes; j++) {
-                    Temp.CamadaSaida.Neuronios[i].Peso[j] = dis.readDouble();
-                }
-            }
-
-            return Temp;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
+    @Deprecated(since = "i'm not using, another aproach")
     static void RNA_CopiarVetorParaCamadas(RedeNeural Rede, double[] Vetor) {
         int j, k, l;
 
@@ -158,20 +120,24 @@ public class NeuralNetwork {
 
         for (i = 0; i < Rede.CamadaSaida.QuantidadeNeuronios; i++) {
             Somatorio = 0;
-            for (j = 0; j < Rede.CamadaEscondida[k - 1].QuantidadeNeuronios; j++) {
-                Somatorio = Somatorio + Rede.CamadaEscondida[k - 1].Neuronios[j].Saida * Rede.CamadaSaida.Neuronios[i].Peso[j];
+            if (Rede.QuantidadeEscondidas - 1 == -1) {
+                System.out.println("erro aqui");
             }
+
+            for (j = 0; j < Rede.CamadaEscondida[Rede.QuantidadeEscondidas - 1].QuantidadeNeuronios; j++) {
+                Somatorio = Somatorio + Rede.CamadaEscondida[Rede.QuantidadeEscondidas - 1].Neuronios[j].Saida * Rede.CamadaSaida.Neuronios[i].Peso[j];
+            }
+
             Rede.CamadaSaida.Neuronios[i].Saida = relu(Somatorio);
         }
     }
 
     static void RNA_CriarNeuronio(Neuronio Neuron, int QuantidadeLigacoes) {
-        int i;
 
         Neuron.QuantidadeLigacoes = QuantidadeLigacoes;
         Neuron.Peso = new double[QuantidadeLigacoes];
 
-        for (i = 0; i < QuantidadeLigacoes; i++) {
+        for (int i = 0; i < QuantidadeLigacoes; i++) {
             Neuron.Peso[i] = (int) (Math.random() * 2000) - 1000;
         }
 
@@ -199,12 +165,12 @@ public class NeuralNetwork {
         Rede.CamadaEscondida = new Camada[QuantidadeEscondidas];
 
         for (i = 0; i < QuantidadeEscondidas; i++) {
-            Rede.CamadaEscondida[i]= new Camada();
+            Rede.CamadaEscondida[i] = new Camada();
             Rede.CamadaEscondida[i].QuantidadeNeuronios = QtdNeuroniosEscondida;
             Rede.CamadaEscondida[i].Neuronios = new Neuronio[QtdNeuroniosEscondida];
 
             for (j = 0; j < QtdNeuroniosEscondida; j++) {
-                    Rede.CamadaEscondida[i].Neuronios[j] = new Neuronio();
+                Rede.CamadaEscondida[i].Neuronios[j] = new Neuronio();
                 if (i == 0) {
                     RNA_CriarNeuronio(Rede.CamadaEscondida[i].Neuronios[j], QtdNeuroniosEntrada);
                 } else {
@@ -218,64 +184,162 @@ public class NeuralNetwork {
 
         for (j = 0; j < QtdNeuroniosSaida; j++) {
             Rede.CamadaSaida.Neuronios[j] = new Neuronio();
+
             RNA_CriarNeuronio(Rede.CamadaSaida.Neuronios[j], QtdNeuroniosEscondida);
         }
 
         return Rede;
     }
+    public static void RNA_SalvarRede(RedeNeural rede, int geracao, String startTime) {
 
+        DecimalFormat df = new DecimalFormat("###,##0.00;###,##0.00");
+        System.setProperty("file.encoding", "UTF-8");
+        String fileName = "resources/RedeNeural-" + startTime+".txt";
+        File file = new File(fileName);
 
-    static void RNA_SalvarRede(RedeNeural Temp, String fileName) {
-        int i, j, k;
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), StandardCharsets.UTF_8))) {
+            // Escreve informações sobre a rede neural
+            if (geracao == 1) {
+                writer.write("Quantidade de camadas escondidas: " + rede.QuantidadeEscondidas + "\n");
+                writer.write("Quantidade de neuronios na camada de entrada: " + rede.CamadaEntrada.QuantidadeNeuronios + "\n");
+                writer.write("Quantidade de neuronios na primeira camada escondida: " + rede.CamadaEscondida[0].QuantidadeNeuronios + "\n");
+                writer.write("Quantidade de neuronios na camada de saida: " + rede.CamadaSaida.QuantidadeNeuronios + "\n");
+                writer.write("\n");
+            }
 
-        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(fileName))) {
-            dos.writeInt(Temp.QuantidadeEscondidas);
-            dos.writeInt(Temp.CamadaEntrada.QuantidadeNeuronios);
-            dos.writeInt(Temp.CamadaEscondida[0].QuantidadeNeuronios);
-            dos.writeInt(Temp.CamadaSaida.QuantidadeNeuronios);
-
-            for (k = 0; k < Temp.QuantidadeEscondidas; k++) {
-                for (i = 0; i < Temp.CamadaEscondida[k].QuantidadeNeuronios; i++) {
-                    for (j = 0; j < Temp.CamadaEscondida[k].Neuronios[i].QuantidadeLigacoes; j++) {
-                        dos.writeDouble(Temp.CamadaEscondida[k].Neuronios[i].Peso[j]);
+            // Escreve informações sobre as camadas escondidas
+            writer.write("GERAÇÃO: " + geracao + "\n");
+            for (int k = 0; k < rede.QuantidadeEscondidas; k++) {
+                writer.write("Camada escondida " + (k+1) + ":\n");
+                for (int i = 0; i < rede.CamadaEscondida[k].QuantidadeNeuronios; i++) {
+                    writer.write("\tNeuronio " + (i+1) + ":\n");
+                    for (int j = 0; j < rede.CamadaEscondida[k].Neuronios[i].QuantidadeLigacoes; j++) {
+                        writer.write("\t\tPeso " + (j+1) + ": " +  df.format(rede.CamadaEscondida[k].Neuronios[i].Peso[j]) + "\t");
                     }
+                    writer.write("\n");
                 }
             }
 
-            for (i = 0; i < Temp.CamadaSaida.QuantidadeNeuronios; i++) {
-                for (j = 0; j < Temp.CamadaSaida.Neuronios[i].QuantidadeLigacoes; j++) {
-                    dos.writeDouble(Temp.CamadaSaida.Neuronios[i].Peso[j]);
+            // Escreve informações sobre a camada de saída
+            writer.write("Camada de saida:\n");
+            for (int i = 0; i < rede.CamadaSaida.QuantidadeNeuronios; i++) {
+                writer.write("\tNeuronio " + (i+1) + ":\n");
+                for (int j = 0; j < rede.CamadaSaida.Neuronios[i].QuantidadeLigacoes; j++) {
+                    writer.write("\t\tPeso " + (j+1) + ": " +  df.format(rede.CamadaSaida.Neuronios[i].Peso[j]) + "\t");
                 }
+                writer.write("\n");
             }
+
+            // Escreve separador
+            writer.write("\n=====================\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-/*
-    private static void calculateError(RedeNeural net, double[] target) {
-        int i, j, k;
 
-        for (i = 0; i < net.CamadaSaida.QuantidadeNeuronios; i++) {
-            net.CamadaSaida.Neuronios[i].Erro = (target[i] - net.CamadaSaida.Neuronios[i].Saida) * reluDx(net.CamadaSaida.Neuronios[i].Saida);
+
+    @Deprecated(since = "another approach, this is not in use")
+    static void calculateError(RedeNeural redeNeural, double[] target) {
+        int i, j, k;
+        double sum;
+
+        for (i = 0; i < redeNeural.CamadaSaida.QuantidadeNeuronios; i++) {
+            redeNeural.CamadaSaida.Neuronios[i].Erro = (target[i] - redeNeural.CamadaSaida.Neuronios[i].Saida) * reluDx(redeNeural.CamadaSaida.Neuronios[i].Saida);
         }
 
-        for (k = net.CamadaEscondida.length - 1; k >= 0; k--) {
-            for (i = 0; i < net.CamadaEscondida[k].numNeurons - BIAS; i++) {
+        for (k = redeNeural.QuantidadeEscondidas - 1; k >= 0; k--) {
+            for (i = 0; i < redeNeural.CamadaEscondida[k].QuantidadeNeuronios - BIAS; i++) {
                 sum = 0;
-                if (k == net.CamadaEscondida.length - 1) {
-                    for (j = 0; j < net.CamadaSaida.numNeurons; j++) {
-                        sum += net.CamadaSaida.Neuronios[j].weights[i] * net.CamadaSaida.Neuronios[j].error;
+                if (k == redeNeural.CamadaEscondida.length - 1) {
+                    for (j = 0; j < redeNeural.CamadaSaida.QuantidadeNeuronios; j++) {
+                        sum += redeNeural.CamadaSaida.Neuronios[j].Peso[i] * redeNeural.CamadaSaida.Neuronios[j].Erro;
                     }
                 } else {
-                    for (j = 0; j < net.CamadaEscondida[k + 1].QuantidadeNeuronios - BIAS; j++) {
-                        sum += net.CamadaEscondida[k + 1].Neuronios[j].weights[i] * net.CamadaEscondida[k + 1].Neuronios[j].error;
+                    for (j = 0; j < redeNeural.CamadaEscondida[k + 1].QuantidadeNeuronios - BIAS; j++) {
+                        sum += redeNeural.CamadaEscondida[k + 1].Neuronios[j].Peso[i] * redeNeural.CamadaEscondida[k + 1].Neuronios[j].Erro;
                     }
                 }
-                net.CamadaEscondida[k].Neuronios[i].Erro = reluDx(net.CamadaEscondida[k].Neuronios[i].Saida) * sum;
+                redeNeural.CamadaEscondida[k].Neuronios[i].Erro = reluDx(redeNeural.CamadaEscondida[k].Neuronios[i].Saida) * sum;
             }
         }
-    }*/
+    }
+
+
+    @Deprecated(since = "another approach, this is not in use")
+    static void updateWeights(RedeNeural redeNeural) {
+        int i, j, k;
+
+        for (k = 0; k < redeNeural.QuantidadeEscondidas; k++) {
+            for (i = 0; i < redeNeural.CamadaEscondida[k].QuantidadeNeuronios - BIAS; i++) {
+                for (j = 0; j < redeNeural.CamadaEscondida[k].Neuronios[i].QuantidadeLigacoes; j++) {
+                    if (k == 0) {
+                        redeNeural.CamadaEscondida[k].Neuronios[i].Peso[j] += TAXA_APRENDIZADO * redeNeural.CamadaEntrada.Neuronios[j].Saida * redeNeural.CamadaEscondida[k].Neuronios[i].Erro;
+                    } else {
+                        redeNeural.CamadaEscondida[k].Neuronios[i].Peso[j] += TAXA_APRENDIZADO * redeNeural.CamadaEscondida[k - 1].Neuronios[j].Saida * redeNeural.CamadaEscondida[k].Neuronios[i].Erro;
+                    }
+                }
+            }
+        }
+
+        for (i = 0; i < redeNeural.CamadaSaida.QuantidadeNeuronios; i++) {
+            for (j = 0; j < redeNeural.CamadaSaida.Neuronios[i].QuantidadeLigacoes; j++) {
+                redeNeural.CamadaSaida.Neuronios[i].Peso[j] += TAXA_APRENDIZADO * redeNeural.CamadaEscondida[redeNeural.QuantidadeEscondidas - 1].Neuronios[j].Saida * redeNeural.CamadaSaida.Neuronios[i].Erro;
+            }
+        }
+    }
+
+
+    static RedeNeural crossoverAndMutateRedeNeural(RedeNeural parent1, RedeNeural parent2, double mutationRate) {
+        RedeNeural child = new RedeNeural();
+
+        // Copia a Camada de Entrada do primeiro parent
+        child.CamadaEntrada = parent1.CamadaEntrada;
+        child.QuantidadeEscondidas = parent1.QuantidadeEscondidas;
+
+        // Crossover e mutação para a Camada Escondida
+        child.CamadaEscondida = new Camada[parent1.QuantidadeEscondidas];
+        for (int k = 0; k < parent1.QuantidadeEscondidas; k++) {
+            child.CamadaEscondida[k] = new Camada();
+            child.CamadaEscondida[k].QuantidadeNeuronios = parent1.CamadaEscondida[k].QuantidadeNeuronios;
+            child.CamadaEscondida[k].Neuronios = new Neuronio[child.CamadaEscondida[k].QuantidadeNeuronios];
+
+            for (int i = 0; i < child.CamadaEscondida[k].QuantidadeNeuronios; i++) {
+                child.CamadaEscondida[k].Neuronios[i] = new Neuronio();
+                child.CamadaEscondida[k].Neuronios[i].QuantidadeLigacoes = parent1.CamadaEscondida[k].Neuronios[i].QuantidadeLigacoes;
+                child.CamadaEscondida[k].Neuronios[i].Peso = new double[child.CamadaEscondida[k].Neuronios[i].QuantidadeLigacoes];
+
+                for (int j = 0; j < child.CamadaEscondida[k].Neuronios[i].QuantidadeLigacoes; j++) {
+                    double rand = Math.random();
+                    if (rand < mutationRate/100) {
+                        child.CamadaEscondida[k].Neuronios[i].Peso[j] = Uteis.getRandomValue(); // Função para gerar um peso aleatório
+                    } else {
+                        child.CamadaEscondida[k].Neuronios[i].Peso[j] = Math.random() < 0.5 ? parent1.CamadaEscondida[k].Neuronios[i].Peso[j] : parent2.CamadaEscondida[k].Neuronios[i].Peso[j];
+                    }
+                }
+            }
+        }
+        // Crossover e mutação para a Camada de Saída
+        child.CamadaSaida.QuantidadeNeuronios = parent1.CamadaSaida.QuantidadeNeuronios;
+        child.CamadaSaida.Neuronios = new Neuronio[child.CamadaSaida.QuantidadeNeuronios];
+
+        for (int i = 0; i < child.CamadaSaida.QuantidadeNeuronios; i++) {
+            child.CamadaSaida.Neuronios[i] = new Neuronio();
+            child.CamadaSaida.Neuronios[i].QuantidadeLigacoes = parent1.CamadaSaida.Neuronios[i].QuantidadeLigacoes;
+            child.CamadaSaida.Neuronios[i].Peso = new double[child.CamadaSaida.Neuronios[i].QuantidadeLigacoes];
+
+            for (int j = 0; j < child.CamadaSaida.Neuronios[i].QuantidadeLigacoes; j++) {
+                double rand = Math.random();
+                if (rand < mutationRate/100) {
+                    child.CamadaSaida.Neuronios[i].Peso[j] = Uteis.getRandomValue(); // Função para gerar um peso aleatório
+                } else {
+                    child.CamadaSaida.Neuronios[i].Peso[j] = Math.random() < 0.5 ? parent1.CamadaSaida.Neuronios[i].Peso[j] : parent2.CamadaSaida.Neuronios[i].Peso[j];
+                }
+            }
+        }
+
+        return child;
+    }
 
 }
 
