@@ -1,7 +1,8 @@
 # [Google Dinossaur A.I. ](chrome://dino)
 
 
-================================================================================================
+==========================================
+======================================================
 
 * Speed control (CLOCK between 1 and 3)
 
@@ -52,9 +53,19 @@ Camada de saida:
 	Neuronio 2:
 		Peso 1: -104,8			Peso 2: 731,6			Peso 3: 46,4			Peso 4: -613,1			Peso 5: 853,4			Peso 6: -145,5			Peso 7: 138,6	
 
-=====================
+
 ```
+Best Neural Network File
+[RedeNeural-29-03-2023 19-30-06.txt](resources%2FRedeNeural-29-03-2023%2019-30-06.txt)
+
+![melhor-resultado-5000.png](melhor-resultado-5000.png)
+
+![melhor-resultado-20000.png](melhor-resultado-20000.png)
+
+================================================================================================
 
 Sorry for non-Portuguese speakers, most of the prints are in Portuguese, but methods and variables are in English ':D
+================================================================================================
+
 
 Need help? https://www.linkedin.com/in/naelsonm/
