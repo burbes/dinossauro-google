@@ -2,61 +2,61 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameScreen extends JPanel implements Runnable, KeyListener {
 
-    private float espacoPercorrido = 0;
+    // Constantes
+    public static final float GRAVITY = 0.8f; // Valor anterior era 0.5f
+    public static final float GROUND_Y = 110; // Em pixels
+    public static final int TOTAL_DINOSAURS = 1000;
+    public static final int SCREEN_WIDTH = 1200;
+    public static final int SCREEN_HEIGHT = 500;
+    public static final int MAX_CLOCK = 10; // Valor máximo para o clock
+
+    // Variáveis do jogo
+    private int bestFitness = 0;
+    private double averageFitness = 0.0;
+
+    public static double mutationRate = 0.05; // Taxa de mutação inicial de 5%
+    public static float globalSpeed = 5f; // Valor inicial da velocidade global
+    public static float distanceTraveled = 0;
     public static long startTime = 0;
     public static long currentTime = 0;
+    public static long clock = 1;
+    public static float speed = 3f;
+    public static float baseSpeed = 5f; // Valor inicial da velocidade base
+    public static int generation = 0;
+    public static int bestScore = 0;
+    public static int currentScore = 0;
 
-    public static long CLOCK = 1;
-    public static float VELOCIDADE = 3f;
-    public static final float GRAVITY = 0.5f;
-    public static final float GROUNDy = 110; // by pixel
-    public static final int QUANTIDADE_DINOS = 1000;
-
-    private int GERACAO = 0;
-
-    private List<MainCharacter> dinossaurs;
-
-    List<MainCharacter> bestDinosaurs;
-    private boolean isKeyPressed;
-
+    // Objetos do jogo
+    private List<MainCharacter> dinosaurs;
+    private List<MainCharacter> bestDinosaurs;
     private Thread thread;
-
     private Clouds clouds;
     private Land land;
     private EnemiesManager enemiesManager;
-
-    private GameStateEnum gameState = GameStateEnum.GAME_PLAYING_STATE; //or START_GAME_STATE if you want
-    private BufferedImage gameOverButtonImage;
-
-    private EstadoDinossauro estadoDinossauro;
-
-    private int melhorScore;
-    private int scoreAtual;
+    private GameStateEnum gameState = GameStateEnum.PLAYING;
+    private DinosaurStateController dinosaurStateController;
 
     public GameScreen() {
         thread = new Thread(this);
-        gameOverButtonImage = Resource.getResourceImage("data/gameover_text.png");
-
-        dinossaurs = new ArrayList<>();
+        dinosaurs = new ArrayList<>();
         bestDinosaurs = new ArrayList<>();
-        for (int i = 0; i < QUANTIDADE_DINOS; i++) {
-            MainCharacter character = new MainCharacter();
-            dinossaurs.add(character);
+        for (int i = 0; i < TOTAL_DINOSAURS; i++) {
+            dinosaurs.add(new MainCharacter());
         }
-        estadoDinossauro = new EstadoDinossauro();
+        // Inicializa bestDinosaurs com os dois primeiros dinossauros
+        bestDinosaurs.add(dinosaurs.get(0));
+        bestDinosaurs.add(dinosaurs.get(1));
+        dinosaurStateController = new DinosaurStateController();
         land = new Land();
         clouds = new Clouds();
-        enemiesManager = new EnemiesManager(dinossaurs);
-        GERACAO++;
-        melhorScore = 0;
-        scoreAtual = 0;
+        enemiesManager = new EnemiesManager(dinosaurs);
+        generation++;
     }
 
     public void startGame() {
@@ -64,235 +64,199 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         thread.start();
     }
 
+    @Override
     public void paint(Graphics g) {
         super.paint(g);
 
-        //DESENHA O QUADRADO DO FUNDO
+        // Desenha o fundo
         g.setColor(Color.decode("#f7f7f7"));
         g.fillRect(0, 0, getWidth(), getHeight());
 
+        // Desenha informações do jogo
         g.setColor(Color.BLACK);
+        g.drawString("HI: " + currentScore, 500, 20);
+        g.drawString("Time: " + (currentTime - startTime) / 1000 + "s", 450, SCREEN_HEIGHT - 280);
+        g.drawString("Best Score: " + bestScore, 40, SCREEN_HEIGHT - 260);
+        g.drawString("Generation: " + generation, 40, SCREEN_HEIGHT - 80);
+        g.drawString("Speed: " + String.format("%.2f", globalSpeed), 40, SCREEN_HEIGHT - 120);
+        g.drawString("Clock: " + clock, 40, SCREEN_HEIGHT - 100);
 
-        g.drawString("HI: " + scoreAtual, 500, 20);
+        int aliveDinosaurs = (int) dinosaurs.stream().filter(MainCharacter::isAlive).count();
+        g.drawString("Dinosaurs Alive: " + aliveDinosaurs + "/" + TOTAL_DINOSAURS, 40, SCREEN_HEIGHT - 140);
 
-        g.drawString("Time Diff: " + (currentTime - startTime) / 1000 + "s", 450, GameWindow.SCREEN_HEIGHT - 280);
-        g.drawString("Current Time: " + Uteis.getDateFormated(currentTime), 250, GameWindow.SCREEN_HEIGHT - 280);
-        g.drawString("Start Time: " + Uteis.getDateFormated(startTime), 40, GameWindow.SCREEN_HEIGHT - 280);
+        int bestFitness = dinosaurs.stream().mapToInt(MainCharacter::getFitness).max().orElse(0);
+        g.drawString("Best Fitness: " + bestFitness, 40, SCREEN_HEIGHT - 160);
 
-        g.drawString("Melhor Score: " + melhorScore, 40, GameWindow.SCREEN_HEIGHT - 260);
-        g.drawString("Dinos total: " + dinossaurs.size(), 40, GameWindow.SCREEN_HEIGHT - 240);
-        g.drawString("Dinos vivos: " + (dinossaurs.stream().filter(MainCharacter::isAlive).count()), 40, GameWindow.SCREEN_HEIGHT - 220);
+        double averageFitness = dinosaurs.stream().mapToInt(MainCharacter::getFitness).average().orElse(0);
+        g.drawString("Average Fitness: " + String.format("%.2f", averageFitness), 40, SCREEN_HEIGHT - 180);
+        g.drawString("Mutation Rate: " + String.format("%.2f", mutationRate * 100) + "%", 40, SCREEN_HEIGHT - 200);
+        g.drawString("Distance: " + String.format("%.2f", distanceTraveled), 500, 40);
+        g.drawString("Enemies Passed: " + enemiesManager.getEnemiesPassed(), 500, 60);
 
-        g.drawString("Distancia do Prox Obstáculo: " + enemiesManager.getDistanciaAtePersonagem(), 40, GameWindow.SCREEN_HEIGHT - 200);
-        g.drawString("Altura do Prox Obstáculo: " + (100 - enemiesManager.getEnemy().getBound().getY()), 40, GameWindow.SCREEN_HEIGHT - 160);
-        g.drawString("Largura do Prox Obstáculo: " + enemiesManager.getEnemy().getBound().getWidth(), 40, GameWindow.SCREEN_HEIGHT - 180);
-        g.drawString("Comprimento do Prox Obstáculo: " + enemiesManager.getEnemy().getBound().getHeight(), 40, GameWindow.SCREEN_HEIGHT - 140);
+        // Desenha elementos do jogo
+        clouds.draw(g);
+        land.draw(g);
+        for (MainCharacter dino : dinosaurs) {
+            if (dino.isAlive()) {
+                dino.draw(g);
+            }
+        }
+        enemiesManager.draw(g);
 
-        g.drawString("Velocidade: " + VELOCIDADE, 40, GameWindow.SCREEN_HEIGHT - 120);
-        g.drawString("CLOCK: " + CLOCK, 40, GameWindow.SCREEN_HEIGHT - 100);
-        g.drawString("Geração: " + GERACAO, 40, GameWindow.SCREEN_HEIGHT - 80);
-
-        g.drawString("Naelson Matheus Junior naelsonmjunior@gmail.com ", GameWindow.SCREEN_WIDTH - 400, GameWindow.SCREEN_HEIGHT - 100);
-
-        switch (gameState) {
-            case START_GAME_STATE:
-                dinossaurs.stream().findAny().get().draw(g);
-                break;
-            case GAME_PLAYING_STATE:
-                clouds.draw(g);
-                land.draw(g);
-
-                for (int i = 0; i < dinossaurs.size(); i++) {
-                    MainCharacter dino = dinossaurs.get(i);
-                    if (dino.isAlive())
-                        dino.draw(g);
-                }
-                enemiesManager.draw(g);
-                g.setColor(Color.BLACK);
-
-                break;
-            case GAME_OVER_STATE:
-                g.drawImage(gameOverButtonImage, 100, 50, null);
-                try {
-                    Thread.sleep(1000); //espera 1 segundo e reinicia o jogo
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                gameState = GameStateEnum.GAME_PLAYING_STATE;
-                resetGame();
-                break;
+        // Se quiser, pode exibir uma mensagem quando o jogo está em GAME_OVER
+        if (gameState == GameStateEnum.GAME_OVER) {
+            g.setColor(Color.RED);
+            g.drawString("Game Over", SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2);
         }
     }
 
-
     @Override
-    public void keyTyped(KeyEvent e) {
-        //TODO Auto-generated method stub
+    public void run() {
+        while (true) {
+            try {
+                if (gameState == GameStateEnum.PLAYING) {
+                    // Aumenta a velocidade base a cada 100 pontos
+                    if (currentScore % 100 == 0 && currentScore != 0) {
+                        baseSpeed += 0.1f;
+                    }
+                    // Ajuste a velocidade global com base no clock
+                    globalSpeed = baseSpeed * clock;
+
+                    // Atualize a velocidade de acordo com a distância percorrida ou pontuação, se desejar
+                    // Por exemplo, aumentar a velocidade gradualmente ao longo do tempo
+
+                    for (MainCharacter dino : dinosaurs) {
+                        MainCharacterState state = dinosaurStateController.controlDinosaurState(dino, enemiesManager.getCurrentEnemy());
+                        if (state == MainCharacterState.JUMPING) {
+                            dino.jump();
+                        } else if (state == MainCharacterState.DUCKING) {
+                            dino.duck(true);
+                        } else {
+                            dino.duck(false);
+                        }
+                    }
+                    updateGame();
+                    currentTime = System.currentTimeMillis();
+                    repaint();
+                }
+                Thread.sleep(Math.max(1, 25 / clock));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
+    private void updateGame() {
+        if (gameState == GameStateEnum.PLAYING) {
+            for (MainCharacter dino : dinosaurs) {
+                dino.update();
+            }
+            currentScore = dinosaurs.stream().mapToInt(MainCharacter::getScore).max().orElse(0);
+            enemiesManager.update();
+            land.update();
+            clouds.update();
+            distanceTraveled += globalSpeed; // Atualiza a distância percorrida
+
+            // Atualiza estatísticas de fitness
+            updateFitnessStats();
+
+            if (dinosaurs.stream().noneMatch(MainCharacter::isAlive)) {
+                resetGame();
+            }
+        }
+    }
+
+    private void resetGame() {
+        updateBestScore();
+        enemiesManager.reset();
+        dinosaurs = sortDinosaursByFitness();
+        List<MainCharacter> topDinosaurs = dinosaurs.subList(0, Math.min(2, dinosaurs.size()));
+        updateBestDinosaursEver(topDinosaurs);
+        if (bestDinosaurs.size() < 2) {
+            // Se não houver dois dinossauros, preencha com cópias dos melhores disponíveis
+            while (bestDinosaurs.size() < 2) {
+                bestDinosaurs.add(new MainCharacter());
+            }
+        }
+        // Remova a chamada para salvar a rede neural se não estiver implementada
+        // NeuralNetwork.saveNetwork(bestDinosaurs.get(0).getBrain(), generation, Utility.getFormattedDate(startTime));
+        generation++;
+
+        // Recriar a lista de dinossauros com novos cérebros
+        List<MainCharacter> newDinosaurs = new ArrayList<>();
+        for (int i = 0; i < TOTAL_DINOSAURS; i++) {
+            MainCharacter dino = new MainCharacter();
+            dino.setBrain(NeuralNetwork.crossoverAndMutate(
+                    bestDinosaurs.get(0).getBrain(),
+                    bestDinosaurs.get(1).getBrain(),
+                    mutationRate // Use a variável mutationRate que você declarou
+            ));
+            dino.reset(); // Reset o estado do dinossauro
+            newDinosaurs.add(dino);
+        }
+        dinosaurs = newDinosaurs;
+        enemiesManager.setDinosaurs(dinosaurs); // Atualiza a referência dos dinossauros no EnemiesManager
+
+        // Resetar outras variáveis do jogo
+        baseSpeed = 5f;
+        globalSpeed = baseSpeed * clock;
+        distanceTraveled = 0;
+        startTime = System.currentTimeMillis();
+        currentTime = startTime;
+        gameState = GameStateEnum.PLAYING;
+
+
+    }
+
+    private List<MainCharacter> sortDinosaursByFitness() {
+        return dinosaurs.stream()
+                .sorted(Comparator.comparing(MainCharacter::getFitness).reversed())
+                .collect(Collectors.toList());
+    }
+
+    private void updateBestDinosaursEver(List<MainCharacter> topDinosaurs) {
+        bestDinosaurs.clear();
+        bestDinosaurs.addAll(topDinosaurs);
+    }
+
+    private void updateBestScore() {
+        int maxScore = dinosaurs.stream().mapToInt(MainCharacter::getScore).max().orElse(0);
+        bestScore = Math.max(maxScore, bestScore);
+
+        int maxFitness = dinosaurs.stream().mapToInt(MainCharacter::getFitness).max().orElse(0);
+        bestFitness = Math.max(maxFitness, bestFitness);
+    }
+
+    // Implementação dos métodos KeyListener
     @Override
     public void keyPressed(KeyEvent e) {
-        if (!isKeyPressed) {
-            isKeyPressed = true;
-            switch (gameState) {
-                case START_GAME_STATE:
-//                    if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                    gameState = GameStateEnum.GAME_PLAYING_STATE;
-//                    }
-                    break;
-                case GAME_PLAYING_STATE:
-/*                    if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                        dinossaurs.get(1).jump();//TODO uncomment to control a dino
-                    } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                        dinossaurs.get(1).down(true);//TODO uncomment to control a dino
-                    }
-                    */
-                    if (e.getKeyCode() == KeyEvent.VK_UP) {
-                        if (CLOCK < 4) {
-                            CLOCK++;
-                        }
-                    }
-                    if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                        if (CLOCK > 1) {
-                            CLOCK--;
-                        }
-                    }
-
-
-                    break;
-                case GAME_OVER_STATE:
-                    if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                        gameState = GameStateEnum.GAME_PLAYING_STATE;
-                        resetGame();
-                    }
-                    break;
-
+        int keyCode = e.getKeyCode();
+        if (keyCode == KeyEvent.VK_UP) {
+            if (clock < MAX_CLOCK) {
+                clock++;
+            }
+        } else if (keyCode == KeyEvent.VK_DOWN) {
+            if (clock > 1) {
+                clock--;
             }
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        isKeyPressed = false;
-        if (gameState == GameStateEnum.GAME_PLAYING_STATE) {
-            if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                //dinossaurs.get(1).down(false);
-            }
-        }
+        // Não utilizado neste contexto
     }
 
     @Override
-    public void run() {
-
-        // Displaying the thread that is running
-        System.out.println(
-                "Thread " + Thread.currentThread().getId()
-                        + " is running");
-
-        while (true) {
-
-            try {
-                VELOCIDADE = espacoPercorrido++ / (currentTime - startTime);
-                for (int i = 0; i < dinossaurs.size(); i++) {
-                    MainCharacter dino = dinossaurs.get(i);
-                    MainCharacterStateEnum estadoDinoEnum = estadoDinossauro.controlarEstadoDinossauros(dino, enemiesManager.getEnemy());
-
-                    if (estadoDinoEnum.equals(MainCharacterStateEnum.JUMPING)) {
-                        dino.jump();
-                    } else if (estadoDinoEnum.equals(MainCharacterStateEnum.DOWN_RUN)) {
-                        dino.down(true);
-                    }
-
-                }
-                update();
-
-                currentTime = System.currentTimeMillis();
-
-                repaint();
-                Thread.sleep(25 / CLOCK);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        }
+    public void keyTyped(KeyEvent e) {
+        // Não utilizado
     }
 
-    public void update() {
-        switch (gameState) {
-            case GAME_PLAYING_STATE:
+    private void updateFitnessStats() {
+        int maxFitness = dinosaurs.stream().mapToInt(MainCharacter::getFitness).max().orElse(0);
+        bestFitness = Math.max(maxFitness, bestFitness);
 
-                Iterator<MainCharacter> iterator = dinossaurs.iterator();
-                while (iterator.hasNext()) {
-                    MainCharacter dino = iterator.next();
-                    dino.update();
-                }
-                scoreAtual = dinossaurs.stream().map(MainCharacter::getScore).max(Comparator.comparing(d -> d)).orElse(0);
-                enemiesManager.update();
-                land.update();
-                clouds.update();
-
-                if (dinossaurs.stream().allMatch(dino -> !dino.isAlive())) {
-                    gameState = GameStateEnum.GAME_OVER_STATE;
-                }
-                break;
-        }
-    }
-
-    private List<MainCharacter> sortBestDinosaurs() {
-        return dinossaurs.stream().sorted(Comparator.comparing(MainCharacter::getFitness).reversed()).collect(Collectors.toList());
-    }
-
-    private void resetGame() {
-        melhorScore();
-
-        enemiesManager.reset();
-
-        dinossaurs = sortBestDinosaurs();
-        List<MainCharacter> melhores2Dino = Arrays.asList(dinossaurs.get(0), dinossaurs.get(1));
-
-        bestDinossaursEver(melhores2Dino);
-
-        NeuralNetwork.RNA_SalvarRede(bestDinosaurs.get(0).cerebro, GERACAO, Uteis.getDateFormated(startTime));
-        GERACAO++;
-
-        int i = 0;
-        Iterator<MainCharacter> iterator = dinossaurs.iterator();
-        while (iterator.hasNext()) {
-            MainCharacter dino = iterator.next();
-            dino.setAlive(true);
-            dino.dead(false);
-            dino.score = 0;
-            dino.fitness = 0;
-
-            dino.cerebro = NeuralNetwork.crossoverAndMutateRedeNeural(bestDinosaurs.get(0).cerebro, bestDinosaurs.get(1).cerebro, dino.tamanhoDNA);
-
-        }
-    }
-
-    private void bestDinossaursEver(List<MainCharacter> melhores2Dino) {
-        for (MainCharacter currentBest : melhores2Dino) {
-            boolean added = false;
-            for (int i = 0; i < bestDinosaurs.size(); i++) {
-                if (currentBest.getScore() > bestDinosaurs.get(i).getScore()) {
-                    bestDinosaurs.add(i, currentBest);
-                    added = true;
-                    break;
-                }
-            }
-            if (!added && bestDinosaurs.size() < 2) {
-                bestDinosaurs.add(currentBest);
-                added = true;
-            }
-
-            while (bestDinosaurs.size() > 2) {
-                bestDinosaurs.remove(2);
-            }
-        }
-    }
-
-    private void melhorScore() {
-        int aux = dinossaurs.stream().map(MainCharacter::getScore).max(Comparator.comparing(d -> d)).orElse(0);
-        melhorScore = aux > melhorScore ? aux : melhorScore;
+        averageFitness = dinosaurs.stream().mapToInt(MainCharacter::getFitness).average().orElse(0.0);
     }
 
 }

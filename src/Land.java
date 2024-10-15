@@ -1,65 +1,58 @@
-import java.awt.*;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 public class Land {
 
-    private BufferedImage imageLand1;
-    private BufferedImage imageLand2;
-    private BufferedImage imageLand3;
-    private List<ImageLand> listLand;
+    private BufferedImage landImage1;
+    private BufferedImage landImage2;
+    private BufferedImage landImage3;
+    private List<ImageLand> landImages;
 
     public Land() {
+        landImage1 = Resource.getImage("data/land1.png");
+        landImage2 = Resource.getImage("data/land2.png");
+        landImage3 = Resource.getImage("data/land3.png");
 
-        imageLand1 = Resource.getResourceImage("data/land1.png");
-        imageLand2 = Resource.getResourceImage("data/land2.png");
-        imageLand3 = Resource.getResourceImage("data/land3.png");
-
-        int numberOfImageLand = GameWindow.SCREEN_WIDTH / imageLand1.getWidth() + 2;
-        listLand = new ArrayList<>();
-        for (int i = 0; i < numberOfImageLand; i++) {
+        landImages = new ArrayList<>();
+        int numberOfImages = GameScreen.SCREEN_WIDTH / landImage1.getWidth() + 2;
+        for (int i = 0; i < numberOfImages; i++) {
             ImageLand imageLand = new ImageLand();
-            imageLand.posX = i * imageLand1.getWidth();
-            imageLand.image = getImage();
-            listLand.add(imageLand);
+            imageLand.posX = i * landImage1.getWidth();
+            imageLand.image = getRandomLandImage();
+            landImages.add(imageLand);
         }
     }
 
-
     public void update() {
-        for (ImageLand imageLand : listLand) {
-            imageLand.posX--;
+        for (ImageLand imageLand : landImages) {
+            imageLand.posX -= GameScreen.globalSpeed;
         }
-        ImageLand firstElement = listLand.stream().findFirst().get();
-        if (firstElement.posX + imageLand1.getWidth() < 0) {
-            firstElement.posX = listLand.get(listLand.size() - 1).posX + imageLand1.getWidth();
-            listLand.add(firstElement);
-            listLand.remove(0);
+        ImageLand firstImage = landImages.get(0);
+        if (firstImage.posX + landImage1.getWidth() < 0) {
+            firstImage.posX = landImages.get(landImages.size() - 1).posX + landImage1.getWidth();
+            landImages.add(landImages.remove(0));
         }
     }
 
     public void draw(Graphics g) {
-        for (ImageLand imgLand : listLand) {
-            g.drawImage(imgLand.image, (int) imgLand.posX, (int) GameScreen.GROUNDy - 20, null);
+        for (ImageLand imageLand : landImages) {
+            g.drawImage(imageLand.image, (int) imageLand.posX, (int) (GameScreen.GROUND_Y - 20), null);
         }
     }
 
-
-    private BufferedImage getImage() {
-        Random rand = new Random();
-
-        int i = rand.nextInt(3);
+    private BufferedImage getRandomLandImage() {
+        Random random = new Random();
+        int i = random.nextInt(3);
         switch (i) {
             case 0:
-                return imageLand1;
+                return landImage1;
             case 1:
-                return imageLand3;
+                return landImage2;
             default:
-                return imageLand2;
+                return landImage3;
         }
     }
-
 }

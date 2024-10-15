@@ -4,14 +4,13 @@ import java.io.File;
 import java.io.IOException;
 
 public class Resource {
-    public static BufferedImage getResourceImage(String path) {
-        BufferedImage img = null;
+    public static BufferedImage getImage(String path) {
         try {
-            img = ImageIO.read(new File(path));
+            return ImageIO.read(new File(path)); // Removido "resources/" do caminho
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        return img;
     }
-
 }
+

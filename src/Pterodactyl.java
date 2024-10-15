@@ -1,78 +1,34 @@
-import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.awt.Graphics;
 import java.util.Random;
 
 public class Pterodactyl extends Enemy {
 
-    private float posX, posY;
+    private Animation flyingAnimation;
 
-    private Rectangle rect;
-
-    private Animation flyingAnim;
-    private boolean isScoreGot = false;
-
-    private Random rand;
     public Pterodactyl() {
+        flyingAnimation = new Animation(90);
+        flyingAnimation.addFrame(Resource.getImage("data/pterodactyl1.jpg"));
+        flyingAnimation.addFrame(Resource.getImage("data/pterodactyl2.jpg"));
 
-        rand = new Random();
-        flyingAnim = new Animation(90);
-        flyingAnim.addFrame(Resource.getResourceImage("data/pterodacty.jpg"));
-        flyingAnim.addFrame(Resource.getResourceImage("data/pterodacty2.jpg"));
+        posX = GameScreen.SCREEN_WIDTH;
+        Random random = new Random();
+        posY = random.nextInt(50) + 50; // Posição Y aleatória
 
-        posX = GameWindow.SCREEN_WIDTH - 100;
-        posY = getRandomNumberBetween0And150();
-        rect = new Rectangle();
-    }
-    public int getRandomNumberBetween0And150() {
-        return rand.nextInt(101);
-    }
-    @Override
-    public void draw(Graphics g) {
-        g.drawImage(flyingAnim.getFrame(), (int)posX, (int)posY, null);
+        boundingBox.width = flyingAnimation.getFrame().getWidth();
+        boundingBox.height = flyingAnimation.getFrame().getHeight();
     }
 
     @Override
     public void update() {
-        flyingAnim.updateFrame();
-        posX -=15;
-
-        rect.x = (int)posX;
-        rect.y = (int)posY;
-        rect.width = flyingAnim.getFrame().getWidth();
-        rect.height = flyingAnim.getFrame().getHeight();
+        flyingAnimation.updateFrame();
+        posX -= GameScreen.globalSpeed;
+        boundingBox.x = posX;
+        boundingBox.y = posY;
     }
+
 
     @Override
-    public Rectangle getBound(){
-        return rect;
-    }
-
-    public void setX(int x){
-        posX = x;
-    }
-    public void setY(int y){
-        posY = y;
-    }
-
-    @Override
-    public boolean isOutOfScreen() {
-        if(posX < 0) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean isOver(MainCharacter mainCharacter) {
-        return mainCharacter.getX() > posX;
-    }
-
-    @Override
-    public boolean isScoreGot() {
-        return isScoreGot;
-    }
-    @Override
-    public void setScoreGot(boolean isScoreGot) {
-        this.isScoreGot = isScoreGot;
+    public void draw(Graphics g) {
+        g.drawImage(flyingAnimation.getFrame(), posX, posY, null);
     }
 }

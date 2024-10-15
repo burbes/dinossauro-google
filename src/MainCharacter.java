@@ -1,201 +1,171 @@
-import java.applet.Applet;
-import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Random;
 
 public class MainCharacter {
 
-    public static final int QUANTIDADE_ESCONDIDAS_LAYERS = 1;
-    public static final int QTD_NEURONIOS_ENTRADA = 6;
-    public static final int QTD_NEURONIOS_ESCONDIDA = 6;
-    public static final int QTD_NEURONIOS_SAIDA = 2;
+    private static final int START_X = 50;
+    private static final int START_Y = 60;
 
-    int tamanhoDNA;
-    int fitness = 0;
+    // Constantes da Rede Neural
+    public static final int INPUT_NEURONS = 6;
+    public static final int HIDDEN_NEURONS = 6;
+    public static final int OUTPUT_NEURONS = 2;
+    public static final int HIDDEN_LAYERS = 1;
 
-    NeuralNetwork.RedeNeural cerebro;
-
-    private float x = 0;
-    private float y = 0;
-    private float speedY = 0;
-    private float speedX = 0;
-    private Rectangle rect;
-    public int score = 0;
-    private MainCharacterStateEnum state = MainCharacterStateEnum.NORMAL_RUN;
-
-    private BufferedImage jumping;
-    private BufferedImage deathImage;
-
-    private Animation normalRunAnim;
-
-    private Animation downRunAnim;
-
+    private int dnaSize;
+    private int fitness = 0;
+    private int score = 0;
+    private NeuralNetwork network;
+    private Rectangle boundingBox;
+    private float x;
+    private float y;
+    private float speedY;
     private boolean isAlive = true;
+    private MainCharacterState state = MainCharacterState.RUNNING;
 
-    @SuppressWarnings("unchecked")
-    private AudioClip jumpSound;
-    @SuppressWarnings("unchecked")
-    private AudioClip deadSound;
-    @SuppressWarnings("unchecked")
-    private AudioClip scoreUpSound;
-
-    private Color color;
+    // Imagens e animações
+    private BufferedImage jumpingImage;
+    private BufferedImage deadImage;
+    private Animation runningAnimation;
+    private Animation duckingAnimation;
 
     public MainCharacter() {
-        normalRunAnim = new Animation(90);
-        normalRunAnim.addFrame(Resource.getResourceImage("data/main-character1.png"));
-        normalRunAnim.addFrame(Resource.getResourceImage("data/main-character2.png"));
-        jumping = Resource.getResourceImage("data/main-character3.png");
-        downRunAnim = new Animation(90);
-        downRunAnim.addFrame(Resource.getResourceImage("data/main-character5.png"));
-        downRunAnim.addFrame(Resource.getResourceImage("data/main-character6.png"));
-        deathImage = Resource.getResourceImage("data/main-character4.png");
+        runningAnimation = new Animation(90);
+        runningAnimation.addFrame(Resource.getImage("data/main-character1.png"));
+        runningAnimation.addFrame(Resource.getImage("data/main-character2.png"));
+        jumpingImage = Resource.getImage("data/main-character3.png");
+        duckingAnimation = new Animation(90);
+        duckingAnimation.addFrame(Resource.getImage("data/main-character5.png"));
+        duckingAnimation.addFrame(Resource.getImage("data/main-character6.png"));
+        deadImage = Resource.getImage("data/main-character4.png");
 
-        setX(50); //empurra o dino um pouco pra frente
-        setY(60);
+        x = START_X;
+        y = START_Y;
 
-        cerebro = NeuralNetwork.RNA_CriarRedeNeural(QUANTIDADE_ESCONDIDAS_LAYERS, QTD_NEURONIOS_ENTRADA, QTD_NEURONIOS_ESCONDIDA, QTD_NEURONIOS_SAIDA);
-        tamanhoDNA = NeuralNetwork.RNA_QuantidadePesos(cerebro);
+        network = NeuralNetwork.createNetwork(INPUT_NEURONS, HIDDEN_NEURONS, OUTPUT_NEURONS, HIDDEN_LAYERS);
+        dnaSize = NeuralNetwork.getWeightCount(network);
 
-        rect = new Rectangle();
-
-        color = getRandomColor();
-        try {
-            jumpSound = Applet.newAudioClip(new URL("file", "", "data/jump.wav"));
-            deadSound = Applet.newAudioClip(new URL("file", "", "data/dead.wav"));
-            scoreUpSound = Applet.newAudioClip(new URL("file", "", "data/scoreup.wav"));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        boundingBox = new Rectangle();
     }
 
-    private Color getRandomColor() {
-        Random rand = new Random(3);
-        Color color = Color.GRAY;
-        if (rand.nextInt() == 0) {
-            color = Color.BLACK;
-        }
-        if (rand.nextInt() == 1) {
-            color = Color.BLUE;
-        }
-        if (rand.nextInt() == 2) {
-            color = Color.RED;
-        }
-        if (rand.nextInt() == 3) {
-            color = Color.GREEN;
-        }
-        return color;
-    }
 
     public void update() {
-        normalRunAnim.updateFrame();
-        downRunAnim.updateFrame();
-        //all these line code for jumping
-        if (y >= GameScreen.GROUNDy - normalRunAnim.getFrame().getHeight()) { //  para subtrair o tamanho do personagem
+        runningAnimation.updateFrame();
+        duckingAnimation.updateFrame();
+
+        if (y >= GameScreen.GROUND_Y - getCharacterHeight()) {
             speedY = 0;
-            y = GameScreen.GROUNDy - normalRunAnim.getFrame().getHeight();
-            if (state != MainCharacterStateEnum.DOWN_RUN) {
-                state = MainCharacterStateEnum.NORMAL_RUN;
+            y = GameScreen.GROUND_Y - getCharacterHeight();
+            if (state != MainCharacterState.DUCKING) {
+                state = MainCharacterState.RUNNING;
             }
         } else {
             speedY += GameScreen.GRAVITY;
             y += speedY;
         }
-        rect.x = (int) x;
-        rect.y = (int) y;
-        rect.width = normalRunAnim.getFrame().getWidth();
-        rect.height = normalRunAnim.getFrame().getHeight();
+        updateBoundingBox();
+    }
+    private int getCharacterHeight() {
+        switch (state) {
+            case RUNNING:
+                return runningAnimation.getFrame().getHeight();
+            case JUMPING:
+                return jumpingImage.getHeight();
+            case DUCKING:
+                return duckingAnimation.getFrame().getHeight();
+            default:
+                return runningAnimation.getFrame().getHeight();
+        }
     }
 
-    public Rectangle getBound() {
-        return rect;
+    private void updateBoundingBox() {
+        boundingBox.x = (int) x;
+        boundingBox.y = (int) y;
+        switch (state) {
+            case RUNNING:
+                boundingBox.width = runningAnimation.getFrame().getWidth();
+                boundingBox.height = runningAnimation.getFrame().getHeight();
+                break;
+            case JUMPING:
+                boundingBox.width = jumpingImage.getWidth();
+                boundingBox.height = jumpingImage.getHeight();
+                break;
+            case DUCKING:
+                boundingBox.width = duckingAnimation.getFrame().getWidth();
+                boundingBox.height = duckingAnimation.getFrame().getHeight();
+                boundingBox.y += 20; // Ajuste se necessário
+                break;
+            default:
+                boundingBox.width = runningAnimation.getFrame().getWidth();
+                boundingBox.height = runningAnimation.getFrame().getHeight();
+                break;
+        }
     }
 
     public void draw(Graphics g) {
         switch (state) {
-            case NORMAL_RUN:
-                g.drawImage(normalRunAnim.getFrame(), (int) x, (int) y, null);
+            case RUNNING:
+                g.drawImage(runningAnimation.getFrame(), (int) x, (int) y, null);
                 break;
             case JUMPING:
-                g.drawImage(jumping, (int) x, (int) y, null);
+                g.drawImage(jumpingImage, (int) x, (int) y, null);
                 break;
-            case DOWN_RUN:
-                g.drawImage(downRunAnim.getFrame(), (int) x, (int) (y + 20), null);
+            case DUCKING:
+                g.drawImage(duckingAnimation.getFrame(), (int) x, (int) y + 20, null);
                 break;
-            case DEATH:
-                g.drawImage(deathImage, (int) x - 10, (int) y - 10, null);
+            case DEAD:
+                g.drawImage(deadImage, (int) x - 10, (int) y - 10, null);
                 break;
         }
+
     }
 
     public void jump() {
-        if (state != MainCharacterStateEnum.JUMPING) {
-            speedY = -10f;
+        if (state != MainCharacterState.JUMPING) {
+            speedY = -12f; // Aumente o valor negativo para saltos mais rápidos
             y += speedY;
-            state = MainCharacterStateEnum.JUMPING;
+            state = MainCharacterState.JUMPING;
         }
     }
 
-    public void down(boolean isDown) {
-        if (state == MainCharacterStateEnum.JUMPING) {
+    public void duck(boolean isDucking) {
+        if (state == MainCharacterState.JUMPING) {
             return;
         }
-        if (isDown) {
-            state = MainCharacterStateEnum.DOWN_RUN;
+        if (isDucking) {
+            state = MainCharacterState.DUCKING;
         } else {
-            state = MainCharacterStateEnum.NORMAL_RUN;
+            state = MainCharacterState.RUNNING;
         }
     }
 
-    public float getX() {
-        return x;
-    }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public float getSpeedY() {
-        return speedY;
-    }
-
-    public void setSpeedY(float speedY) {
-        this.speedY = speedY;
-    }
-
-    public float getSpeedX() {
-        return speedX;
-    }
-
-    public void setSpeedX(float speedX) {
-        this.speedX = speedX;
-    }
-
-    public boolean isAlive() {
-        return isAlive;
-    }
-
-    public void setAlive(boolean alive) {
-        isAlive = alive;
-    }
-
-    public void upScore() {
+    public void increaseScore() {
         this.score += 20;
         if (this.score % 1000 == 0) {
-            scoreUpSound.play();
             this.fitness++;
         }
+    }
+
+    public void die() {
+        state = MainCharacterState.DEAD;
+        isAlive = false;
+    }
+
+    public void reset() {
+        isAlive = true;
+        state = MainCharacterState.RUNNING;
+        score = 0;
+        fitness = 0;
+        x = START_X;
+        y = START_Y;
+        speedY = 0;
+        boundingBox = new Rectangle();
+        updateBoundingBox();
+    }
+
+    // Getters e Setters
+    public boolean isAlive() {
+        return isAlive;
     }
 
     public int getScore() {
@@ -203,15 +173,27 @@ public class MainCharacter {
     }
 
     public int getFitness() {
-        return fitness;
+        return score;
     }
 
-    public void dead(boolean isDeath) {
-        if (isDeath) {
-            state = MainCharacterStateEnum.DEATH;
-        } else {
-            state = MainCharacterStateEnum.NORMAL_RUN;
-        }
+    public Rectangle getBoundingBox() {
+        return boundingBox;
+    }
+
+    public NeuralNetwork getBrain() {
+        return network;
+    }
+
+    public void setBrain(NeuralNetwork network) {
+        this.network = network;
+    }
+
+    public int getDNASize() {
+        return dnaSize;
+    }
+
+    public float getX() {
+        return x;
     }
 
 }

@@ -1,70 +1,31 @@
-import java.awt.*;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.awt.Rectangle;
 
 public class Cactus extends Enemy {
 
     private BufferedImage image;
-    private int posX, posY;
 
-    private Rectangle rect;
-    private boolean isScoreGot = false;
+    public Cactus(BufferedImage image1, BufferedImage image2) {
+        image = Math.random() < 0.5 ? image1 : image2;
+        posX = GameScreen.SCREEN_WIDTH;
+        posY = (int) (GameScreen.GROUND_Y - image.getHeight());
+        boundingBox = new Rectangle();
+        boundingBox.x = posX;
+        boundingBox.y = posY;
+        boundingBox.width = image.getWidth();
+        boundingBox.height = image.getHeight();
+    }
 
-    public Cactus() {
-        image = Resource.getResourceImage("data/cactus1.png");
-        posX = GameWindow.SCREEN_WIDTH - 200;
-        posY = 65;
-        rect = new Rectangle();
+    @Override
+    public void update() {
+        posX -= GameScreen.globalSpeed;
+        boundingBox.x = posX;
+        boundingBox.y = posY;
     }
 
     @Override
     public void draw(Graphics g) {
         g.drawImage(image, posX, posY, null);
-    }
-
-    @Override
-    public void update() {
-        posX -= 10;
-        rect.x = posX;
-        rect.y = posY;
-        rect.width = image.getWidth();
-        rect.height = image.getHeight();
-
-    }
-
-    @Override
-    public Rectangle getBound(){
-        return rect;
-    }
-
-    public void setX(int x){
-        posX = x;
-    }
-    public void setY(int y){
-        posY = y;
-    }
-
-    public void setImage(BufferedImage image){
-        this.image = image;
-    }
-    @Override
-    public boolean isOutOfScreen() {
-        if(posX < 0) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean isOver(MainCharacter mainCharacter) {
-        return mainCharacter.getX() > posX;
-    }
-
-    @Override
-    public boolean isScoreGot() {
-        return isScoreGot;
-    }
-    @Override
-    public void setScoreGot(boolean isScoreGot) {
-        this.isScoreGot = isScoreGot;
     }
 }

@@ -1,117 +1,93 @@
-import java.awt.*;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 public class EnemiesManager {
 
-    private BufferedImage cactus1;
-    private BufferedImage cactus2;
-    private BufferedImage pterodactyl;
+    private BufferedImage cactusImage1;
+    private BufferedImage cactusImage2;
 
     private List<Enemy> enemies;
     private Random rand;
+    private List<MainCharacter> dinosaurs;
 
-    private double distanciaAtePersonagem;
+    private int enemiesPassed = 0;
 
-    private List<MainCharacter> dinossaurs;
-
-    public EnemiesManager(List<MainCharacter> dinossaurs) {
-        this.dinossaurs = dinossaurs;
+    public EnemiesManager(List<MainCharacter> dinosaurs) {
+        this.dinosaurs = dinosaurs;
         rand = new Random();
-        enemies = new ArrayList<Enemy>();
+        enemies = new ArrayList<>();
 
-        cactus1 = Resource.getResourceImage("data/cactus1.png");
-        cactus2 = Resource.getResourceImage("data/cactus2.png");
-        pterodactyl = Resource.getResourceImage("data/pterodacty.jpg");
+        cactusImage1 = Resource.getImage("data/cactus1.png");
+        cactusImage2 = Resource.getImage("data/cactus2.png");
 
-        enemies.add(getRandomEnemy());
-
-        distanciaAtePersonagem = 0.0f;
+        enemies.add(createRandomEnemy());
     }
 
-    public Enemy getEnemy() {
-        Optional<Enemy> firstEnemy = enemies.stream().findFirst();
-        if (firstEnemy.isPresent()) {
-            return firstEnemy.get();
-        } else {
-            Enemy newEnemy = getRandomEnemy();
+    public Enemy getCurrentEnemy() {
+        return enemies.stream().findFirst().orElseGet(() -> {
+            Enemy newEnemy = createRandomEnemy();
             enemies.add(newEnemy);
             return newEnemy;
-        }
+        });
     }
 
     public void update() {
-        List<Enemy> enemiesToRemove = new ArrayList<>();
-        List<Enemy> enemiesToAdd = new ArrayList<>();
-
         Iterator<Enemy> iterator = enemies.iterator();
+        List<Enemy> newEnemies = new ArrayList<>(); // Lista para novos inimigos
         while (iterator.hasNext()) {
-            Enemy e = iterator.next();
-            e.update();
-            for (MainCharacter mainCharacter : dinossaurs) {
-                if (e.isOver(mainCharacter) && !e.isScoreGot()) {
-                    mainCharacter.upScore();
-                    e.setScoreGot(true);
-                }
+            Enemy enemy = iterator.next();
+            enemy.update();
 
-                if (mainCharacter.getBound().intersects(e.getBound())) {
-                    mainCharacter.setAlive(false);
-                    mainCharacter.dead(true);
+            for (MainCharacter dinosaur : dinosaurs) {
+                if (dinosaur.isAlive() && enemy.isCollidingWith(dinosaur)) {
+                    dinosaur.die();
                 }
-                distanciaAtePersonagem = mainCharacter.getX() - e.getBound().getX();
-            }
-            if (e.isOutOfScreen()) {
-                enemiesToRemove.add(e);
-                enemiesToAdd.add(getRandomEnemy());
+                if (enemy.isPassedBy(dinosaur) && !enemy.isScoreCounted()) {
+                    dinosaur.increaseScore();
+                    enemy.setScoreCounted(true);
+                    enemiesPassed++; // Incrementa quando um inimigo é ultrapassado
+                }
             }
 
-//            if (currentScore >= 100 && currentScore % 100 == 0 && currentScore > lastScoreWhenEnemyAdded*2) {
-//                enemiesToAdd.add(getRandomEnemy());
-//                lastScoreWhenEnemyAdded = currentScore;
-//            }
+            if (enemy.isOffScreen()) {
+                iterator.remove(); // Remoção segura
+                newEnemies.add(createRandomEnemy()); // Coleta o novo inimigo
+            }
         }
-
-        enemies.removeAll(enemiesToRemove);
-        enemies.addAll(enemiesToAdd);
+        enemies.addAll(newEnemies); // Adiciona novos inimigos após a iteração
     }
 
     public void draw(Graphics g) {
-        for (Enemy e : enemies) {
-            e.draw(g);
+        for (Enemy enemy : enemies) {
+            enemy.draw(g);
         }
-    }
-
-    private Enemy getRandomEnemy() {
-        if (rand.nextBoolean()) {
-            return getRandomCactus();
-        } else {
-            return getPterodactyl();
-        }
-    }
-
-    private Cactus getRandomCactus() {
-        Cactus cactus;
-        cactus = new Cactus();
-        if (rand.nextBoolean()) {
-            cactus.setImage(cactus1);
-        } else {
-            cactus.setImage(cactus2);
-        }
-        return cactus;
-    }
-
-    private Pterodactyl getPterodactyl() {
-        Pterodactyl pterodactyl = new Pterodactyl();
-        return pterodactyl;
     }
 
     public void reset() {
-        enemies = new ArrayList<>();
-        enemies.add(getRandomEnemy());
+        enemies.clear();
+        enemies.add(createRandomEnemy());
+        enemiesPassed = 0; // Reseta o contador
     }
 
-    public double getDistanciaAtePersonagem() {
-        return distanciaAtePersonagem;
+    private Enemy createRandomEnemy() {
+        if (rand.nextBoolean()) {
+            return new Cactus(cactusImage1, cactusImage2);
+        } else {
+            return new Pterodactyl();
+        }
     }
+
+
+    public int getEnemiesPassed() {
+        return enemiesPassed;
+    }
+    public void setDinosaurs(List<MainCharacter> dinosaurs) {
+        this.dinosaurs = dinosaurs;
+    }
+
+
 }
